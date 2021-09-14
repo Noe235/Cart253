@@ -1,3 +1,5 @@
 # Template p5 project
 
-This is the README file for the entire project. For more official projects you should write information here about the nature of the project, your name, any special explanations of how the project works, etc.
+septemebr 14
+did the alien project  didn<t go too hard just review soe basics.Could have sone the eyes to follow cursor but didn't remmeber
+anyway background color changes
