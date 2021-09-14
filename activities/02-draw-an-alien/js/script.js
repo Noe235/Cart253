@@ -1,16 +1,16 @@
 "use strict";
 
 /**************************************************
-Template p5 project
+
 Noemie
 
-Making a cute spider alien
+Making alien
 
 **************************************************/
 
 // setup()
 //
-// Description of setup() goes here.
+// make an alien
 
 function setup() {
   //variables
@@ -63,7 +63,7 @@ function setup() {
 
 // draw()
 //
-// Description of draw() goes here.
+// not used
 function draw() {
 
 }
