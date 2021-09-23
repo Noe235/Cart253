@@ -1,3 +1,9 @@
 # Template p5 project
 
-This is the README file for the entire project. For more official projects you should write information here about the nature of the project, your name, any special explanations of how the project works, etc.
+september 23rd
+work done, all working
+bcurve: change with mouse y
+rectangle 1: float around and reset position at -20 +size
+ellipse: spin faster with mouse x
+rectangle 2: spin to win by itself
+bg: has a tranparency
