@@ -9,7 +9,13 @@ dodging activity
 
 //variables
 let level = 1
+let bg = 64
 
+let statics = {
+  x: 0,
+  y: 0,
+  n: 1000
+}
 let covid19 = {
   x: 0,
   y: 0,
@@ -23,7 +29,7 @@ let player = {
   y: 800,
   d: 100,
 }
-let bg = 64;
+
 
 /**
 Description of setup
@@ -41,11 +47,19 @@ Description of draw()
 */
 function draw() {
   console.log(covid19.d);
-
-  background(bg);
   push();
+  background(bg);
+
+  for (statics.n = 0; statics.n < 1000; statics.n++) {
+    statics.x = random(0, width);
+    statics.y = random(0, height);
+    stroke("white");
+    point(statics.x, statics.y);
+  }
+
 
   //initial circle/player
+  pop()
   fill(0, 0, 255);
   circle(player.x, player.y, 90);
 
