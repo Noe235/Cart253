@@ -65,7 +65,8 @@ function draw() {
 
 
   //constrain of player
-
+  player.x = constrain(player.x, 0, width);
+  player.y = constrain(player.y, 0, height);
 
   //covid19/enemmies
   pop()
