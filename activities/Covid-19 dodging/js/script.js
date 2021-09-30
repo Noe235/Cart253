@@ -13,13 +13,15 @@ let level = 1
 let covid19 = {
   x: 0,
   y: 0,
-  vx: 0.1
+  vx: 0.1,
+  d: 100
 
 }
 
 let player = {
   x: 450,
-  y: 800
+  y: 800,
+  d: 100,
 }
 let bg = 64;
 
@@ -33,11 +35,12 @@ function setup() {
 }
 
 
+
 /**
 Description of draw()
 */
 function draw() {
-  console.log(mouseDragged);
+  console.log(covid19.d);
 
   background(bg);
   push();
@@ -46,7 +49,8 @@ function draw() {
   fill(0, 0, 255);
   circle(player.x, player.y, 90);
 
-  //moving player
+
+  //constrain of player
 
 
   //covid19/enemmies
@@ -71,5 +75,17 @@ function draw() {
   //counter
 
   //gameover
+  covid19.d = dist(player.x, player.y, covid19.x, covid19.y)
+  if (covid19.d < 90)
+    noLoop()
 
+}
+
+//player mouvement
+function mouseDragged() {
+  player.d = dist(player.x, player.y, mouseX, mouseY)
+  if (player.d < 45) {
+    player.x = mouseX;
+    player.y = mouseY;
+  }
 }
