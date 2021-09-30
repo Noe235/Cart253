@@ -22,7 +22,6 @@ let covid19 = {
   vx: 0.1,
   vy: 0.2,
   d: 100,
-
 }
 let covid219 = {
   x: 100,
@@ -64,7 +63,6 @@ function setup() {
 }
 
 
-
 /**
 Covid,player,bg,static, rules
 */
@@ -73,7 +71,7 @@ function draw() {
   push();
   background(bg);
 
-
+  //static
   for (statics.n = 0; statics.n < 1000; statics.n++) {
     statics.x = random(0, width);
     statics.y = random(0, height);
@@ -81,15 +79,13 @@ function draw() {
     point(statics.x, statics.y);
   }
 
-
-
   //initial circle/player
   pop()
   fill(0, 0, 255);
   circle(player.x, player.y, 70);
 
 
-  //constrain of player
+  //constrain of player to stay in canvas
   player.x = constrain(player.x, 0, width);
   player.y = constrain(player.y, 0, height);
 
@@ -100,7 +96,7 @@ function draw() {
   covid19.y += covid19.vy;
   covid19.nf = random(1, 10);
   circle(covid19.x, covid19.y, 90);
-  //bouncing rule
+  //bouncing rule covid19
   if (covid19.x - 50 > width || covid19.x + 50 < 0) {
     covid19.vx = -covid19.vx;
 
@@ -114,7 +110,7 @@ function draw() {
   covid219.y += covid219.vy;
   circle(covid219.x, covid219.y, 90);
 
-  //bouncing rule
+  //bouncing rule covid219
   if (covid219.x - 50 > width || covid219.x + 50 < 0) {
     covid219.vx = -covid219.vx;
 
@@ -129,7 +125,7 @@ function draw() {
   covid319.y += covid319.vy;
   circle(covid319.x, covid319.y, 90);
 
-  //bouncing rule
+  //bouncing rule covid319
   if (covid319.x - 50 > width || covid319.x + 50 < 0) {
     covid319.vx = -covid319.vx;
 
@@ -138,8 +134,6 @@ function draw() {
     covid319.vy = -covid319.vy;
 
   }
-
-
 
 
   //gameover
