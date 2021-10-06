@@ -11,7 +11,8 @@ Noemie
 Description of preload
 */
 function preload() {
-
+  let bgnormal = loadImage(`assets\images\greenlandscape.jpg`);
+  let bglove = loadImage(`assets\images\mountain.jpg`);
 }
 
 
@@ -19,7 +20,7 @@ function preload() {
 Description of setup
 */
 function setup() {
-
+  createCanvas(800, 900);
 }
 
 
