@@ -10,8 +10,13 @@ Noemie
 
 let bgnormal = 0
 let bglove = 0
-let state = `default`
-
+let gamestate = `topmenu`
+let menu = {
+  x: 0,
+  y: 0,
+  alpha: 200,
+  text: `Will you be lucky enough to find your one true love?`
+}
 let player = {
   x: 30,
   y: 450,
@@ -22,7 +27,7 @@ let player = {
 }
 
 let friend = {
-  x: 500,
+  x: 700,
   y: 400,
   size: 50,
   vx: 0.1,
@@ -55,38 +60,101 @@ Description of draw()
 function draw() {
 
   bg();
-
-  //player
-  noStroke();
-  fill(0);
-  circle(player.x, player.y, player.size);
-
-  friendnpc();
-
   playerCommand();
+  if (gamestate === `topmenu`) {
+    topmenu();
+  }
+  if (gamestate === `1%`) {
+    image(bglove, 0, 0, width, height);
+    noStroke();
+    fill(0);
+    circle(player.x, player.y, player.size);
+    //love?
+    fill(255);
+    circle(550, 290, friend.size - 10);
 
+  }
+  if (gamestate === `playing`) {
+    //player
+    noStroke();
+    fill(0);
+    circle(player.x, player.y, player.size);
+
+    friendnpc();
+
+
+  } else if (gamestate === `gameover`) {
+    push();
+    fill(0, menu.alpha);
+    rectMode(CENTER);
+    rect(width / 2, height / 2, 1000, 1000);
+    pop();
+    fill(255);
+    textAlign(CENTER);
+    textSize(70)
+    text(`F,Game Over`, 250, 200, 400, 300);
+    noLoop();
+  }
   //log for debug
   // console.log(player.x, player.y)
-  console.log(friend.x, friend.y)
+  console.log(friend.x, friend.y);
 }
 
 function bg() {
   image(bgnormal, 0, 0, width, height);
   //make it believable in mountain
   //top,bottom
-  player.y = constrain(player.y, 348, 510);
+  player.y = constrain(player.y, 330, 510);
   //left right
   player.x = constrain(player.x, -10, 910);
   //friend top,bottom
   friend.y = constrain(friend.y, 348, 800);
+
+  //Gameover
+  if (friend.x < -10) {
+    gamestate = `gameover`
+  }
+  if (friend.x > 910) {
+    gamestate = `gameover`
+  }
+  if (friend.y > height + 10) {
+    gamestate = `gameover`
+  }
+}
+
+function topmenu() {
+  push();
+  fill(0, menu.alpha);
+  rectMode(CENTER);
+  rect(width / 2, height / 2, 1000, 1000);
+  pop();
+  fill(255);
+  textAlign(CENTER);
+  textSize(70)
+  text(`Catcha your love`, 250, 100, 400, 200);
+
+  textSize(20);
+  text(menu.text, 300, 300, 300, 200);
+
+}
+
+function mousePressed() {
+  if (gamestate === `topmenu`) {
+    clear
+    let gacha = random(0, 1);
+    if (gacha === 0.01) {
+      gamestate = `1%`
+    } else if (gacha > 0.01) {
+      gamestate = `playing`
+
+    }
+  }
 }
 
 function friendnpc() {
 
-
-
   //npc
-  fill(235, 192, 23)
+  fill(255)
   circle(friend.x, friend.y, friend.size);
 
   let change = random(0, 1);
