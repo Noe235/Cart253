@@ -11,6 +11,7 @@ Noemie
 let bgnormal = 0
 let bglove = 0
 let gamestate = `topmenu`
+let gacharate = 0.01
 let menu = {
   x: 0,
   y: 0,
@@ -34,6 +35,11 @@ let friend = {
   vy: 0.1,
   speed: 1
 }
+let love = {
+  x: 500,
+  y: 300,
+  size: 40
+}
 /**
 Description of preload
 */
@@ -50,19 +56,22 @@ function setup() {
   createCanvas(900, 500);
   background(23);
 
-
 }
-
 
 /**
 Description of draw()
 */
 function draw() {
-
+  distanceCheck();
   bg();
   playerCommand();
+
   if (gamestate === `topmenu`) {
     topmenu();
+  }
+  if (gamestate === `end`) {
+    gacharate = random(0, 1);
+    endings();
   }
   if (gamestate === `1%`) {
     image(bglove, 0, 0, width, height);
@@ -71,7 +80,20 @@ function draw() {
     circle(player.x, player.y, player.size);
     //love?
     fill(255);
-    circle(550, 290, friend.size - 10);
+    circle(love.x, love.y, love.size);
+    let d2 = dist(player.x, player.y, love.x, love.y)
+    if (d2 < 40) {
+      push();
+      fill(0, menu.alpha);
+      rectMode(CENTER);
+      rect(width / 2, height / 2, 1000, 1000);
+      pop();
+      fill(255);
+      textAlign(CENTER);
+      textSize(70)
+      text(`Congratulation, It's love`, 250, 200, 400, 300);
+      noLoop();
+    }
 
   }
   if (gamestate === `playing`) {
@@ -95,9 +117,9 @@ function draw() {
     text(`F,Game Over`, 250, 200, 400, 300);
     noLoop();
   }
-  //log for debug
-  // console.log(player.x, player.y)
-  console.log(friend.x, friend.y);
+  // //log for debug
+  // // console.log(player.x, player.y)
+  // console.log(friend.x, friend.y);
 }
 
 function bg() {
@@ -138,6 +160,26 @@ function topmenu() {
 
 }
 
+function distanceCheck() {
+  let d1 = dist(player.x, player.y, friend.x, friend.y)
+  if (d1 < 50) {
+    gamestate = `end`
+  }
+  let d2 = dist(player.x, player.y, love.x, love.y)
+  if (d2 < 40) {
+    push();
+    fill(0, menu.alpha);
+    rectMode(CENTER);
+    rect(width / 2, height / 2, 1000, 1000);
+    pop();
+    fill(255);
+    textAlign(CENTER);
+    textSize(70)
+    text(`Congratulation, It's love`, 250, 200, 400, 300);
+    noLoop();
+  }
+}
+
 function mousePressed() {
   if (gamestate === `topmenu`) {
     clear
@@ -168,6 +210,43 @@ function friendnpc() {
   friend.y = friend.y + friend.vy;
 
 
+}
+
+function endings() {
+  if (gacharate === 0.01) {
+    push();
+    fill(0, menu.alpha);
+    rectMode(CENTER);
+    rect(width / 2, height / 2, 1000, 1000);
+    pop();
+    fill(255);
+    textAlign(CENTER);
+    textSize(70)
+    text(`Congratulation, It's love`, 250, 200, 400, 300);
+    noLoop();
+  } else if (gacharate > 0.01 && gacharate < 0.20) {
+    push();
+    fill(0, menu.alpha);
+    rectMode(CENTER);
+    rect(width / 2, height / 2, 1000, 1000);
+    pop();
+    fill(255);
+    textAlign(CENTER);
+    textSize(70)
+    text(`Friendship, Hopefully it lasts`, 250, 200, 400, 300);
+    noLoop();
+  } else {
+    push();
+    fill(0, menu.alpha);
+    rectMode(CENTER);
+    rect(width / 2, height / 2, 1000, 1000);
+    pop();
+    fill(255);
+    textAlign(CENTER);
+    textSize(60)
+    text(`Just an acquaintance, better luck next time`, 250, 100, 400, 300);
+    noLoop();
+  }
 }
 
 function playerCommand() {
