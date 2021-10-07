@@ -101,7 +101,7 @@ function draw() {
     noStroke();
     fill(0);
     circle(player.x, player.y, player.size);
-
+    //other actor
     friendnpc();
 
 
@@ -133,13 +133,7 @@ function bg() {
   friend.y = constrain(friend.y, 348, 800);
 
   //Gameover
-  if (friend.x < -10) {
-    gamestate = `gameover`
-  }
-  if (friend.x > 910) {
-    gamestate = `gameover`
-  }
-  if (friend.y > height + 10) {
+  if (friend.x < -10 || friend.x > 910 || friend.y > height + 10) {
     gamestate = `gameover`
   }
 }
@@ -161,10 +155,12 @@ function topmenu() {
 }
 
 function distanceCheck() {
+  //greenmountain level
   let d1 = dist(player.x, player.y, friend.x, friend.y)
   if (d1 < 50) {
     gamestate = `end`
   }
+  //love level
   let d2 = dist(player.x, player.y, love.x, love.y)
   if (d2 < 40) {
     push();
@@ -179,7 +175,7 @@ function distanceCheck() {
     noLoop();
   }
 }
-
+//start game function
 function mousePressed() {
   if (gamestate === `topmenu`) {
     clear
@@ -209,10 +205,10 @@ function friendnpc() {
   friend.x = friend.x + friend.vx;
   friend.y = friend.y + friend.vy;
 
-
 }
 
 function endings() {
+  //love
   if (gacharate === 0.01) {
     push();
     fill(0, menu.alpha);
@@ -224,7 +220,9 @@ function endings() {
     textSize(70)
     text(`Congratulation, It's love`, 250, 200, 400, 300);
     noLoop();
-  } else if (gacharate > 0.01 && gacharate < 0.20) {
+  }
+  //friendo
+  else if (gacharate > 0.01 && gacharate < 0.20) {
     push();
     fill(0, menu.alpha);
     rectMode(CENTER);
@@ -235,7 +233,9 @@ function endings() {
     textSize(70)
     text(`Friendship, Hopefully it lasts`, 250, 200, 400, 300);
     noLoop();
-  } else {
+  }
+  //acquaintance
+  else {
     push();
     fill(0, menu.alpha);
     rectMode(CENTER);
@@ -268,6 +268,5 @@ function playerCommand() {
   }
   player.x = player.x + player.vx;
   player.y = player.y + player.vy;
-
 
 }
