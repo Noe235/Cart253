@@ -12,8 +12,18 @@ let gamestate = `playing`; //(playing, pause,)
 let gamepause = `npause`; //(pause, option,cedit)
 let gameoverlay = `no` //(no, gpause,option,credit)
 let menuImage = `assets/images/Menu/menuImage.jpg`;
-let mVolume;
+let mVolume = 0;
 let musiccolor = 100;
+let d1 = 50
+let d2 = 50
+let d3 = 50
+let d4 = 50
+let musicH = {
+  o1: 150,
+  o2: 100,
+  o3: 100,
+  o4: 100,
+};
 
 
 // let buttonPlay(){
@@ -51,9 +61,14 @@ function draw() {
 
 
   }
+  if (gameoverlay === `option`) {
+    musicChecker();
 
 
-  console.log(mouseX, mouseY)
+  }
+
+
+  console.log(d1)
 }
 
 function menu() {
@@ -132,9 +147,10 @@ function option() {
   //music selector
 
   push();
-  fill(149, 200, 216, musiccolor);
+
 
   //track 1
+  fill(149, 200, 216, musicH.o1);
   rect(220, 350, 190, 310, 20);
   fill(149, 200, 216, 120);
   circle(217, 470, 60);
@@ -153,6 +169,7 @@ function option() {
   pop();
 
   //track 2
+  fill(149, 200, 216, musicH.o2);
   rect(420, 350, 190, 310, 20);
   fill(149, 200, 216, 120);
   circle(417, 470, 60);
@@ -168,7 +185,9 @@ function option() {
   textSize(16);
   text(`insert music name here`, 335, 420);
   pop();
+
   //track 3
+  fill(149, 200, 216, musicH.o3);
   rect(620, 350, 190, 310, 20);
   fill(149, 200, 216, 120);
   circle(617, 470, 60);
@@ -184,7 +203,9 @@ function option() {
   textSize(16);
   text(`insert music name here`, 535, 420);
   pop();
+
   //track 4
+  fill(149, 200, 216, musicH.o4);
   rect(820, 350, 190, 310, 20);
   fill(149, 200, 216, 120);
   circle(817, 470, 60);
@@ -212,9 +233,42 @@ function option() {
 
 
 
-
 }
 
+function musicChecker() {
+  d1 = dist(mouseX, mouseY, 217, 470);
+  d2 = dist(mouseX, mouseY, 417, 470);
+  d3 = dist(mouseX, mouseY, 617, 470);
+  d4 = dist(mouseX, mouseY, 817, 470);
+}
+
+function musicSelector() {
+  if (d1 < 30) {
+    musicH.o1 = 150
+    musicH.o2 = 100
+    musicH.o3 = 100
+    musicH.o4 = 100
+  }
+  if (d2 < 30) {
+    musicH.o1 = 100
+    musicH.o2 = 150
+    musicH.o3 = 100
+    musicH.o4 = 100
+  }
+  if (d3 < 30) {
+    musicH.o1 = 100
+    musicH.o2 = 100
+    musicH.o3 = 150
+    musicH.o4 = 100
+  }
+  if (d4 < 30) {
+    musicH.o1 = 100
+    musicH.o2 = 100
+    musicH.o3 = 100
+    musicH.o4 = 150
+  }
+
+}
 
 function mousePressed() {
   if (gamestate === `playing`) {
@@ -237,6 +291,7 @@ function mousePressed() {
     }
   }
   //interaction of overlay
+  //close button
   if (gamestate === `pause`) {
     if ((mouseX > 950 - 25) && (mouseX < 950 + 25) &&
       (mouseY > 200 - 25) && (mouseY < 200 + 25)) {
@@ -244,7 +299,12 @@ function mousePressed() {
       gamestate = `playing`;
     }
 
+    // music selector
+    if (gameoverlay === `option`) {
+      musicSelector();
 
+
+    }
   }
 
 }
