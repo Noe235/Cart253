@@ -12,14 +12,15 @@ let gamestate = `playing`; //(playing, pause,)
 let gamepause = `npause`; //(pause, option,cedit)
 let gameoverlay = `no` //(no, gpause,option,credit)
 let menuImage = `assets/images/Menu/menuImage.jpg`;
-let mVolume = 0;
-let musiccolor = 100;
-let d1 = 50
-let d2 = 50
-let d3 = 50
-let d4 = 50
+let mVolume = 0; //slider for volume
+let musiccolor = 10;
+let track = `1`; //number adds a red dot
+let d1 = 50;
+let d2 = 50;
+let d3 = 50;
+let d4 = 50;
 let musicH = {
-  o1: 150,
+  o1: 100,
   o2: 100,
   o3: 100,
   o4: 100,
@@ -39,32 +40,39 @@ function preload() {
 }
 // setup()
 //#258E70
-// Description of setup() goes here.
+// Only canvas + random generator
 function setup() {
   createCanvas(1100, 800);
-  background(51);
-  if (gamescreen === `menu`) {
-    menu();
-
-  }
 }
 
 // draw()
 //
 // Description of draw() goes here.
 function draw() {
+  if (gamescreen === `menu`) {
+    if (gameoverlay === `no`) {
+      menu();
+    }
+
+  }
 
 
+  //start game
   if (gamescreen === `game`) {
     clear();
     text(`insert game here`, width / 2, height / 2);
 
 
   }
+
   if (gameoverlay === `option`) {
     musicChecker();
+    option();
 
 
+  }
+  if (gameoverlay === `credit`) {
+    credit();
   }
 
 
@@ -101,39 +109,12 @@ function button() {
 
 }
 
-function credit() {
-  gamestate = `pause`;
-  gameoverlay = `credit`;
-  //window
-  fill(0, 0, 0, 170)
-  rect(width / 2, height / 2, 900, 500, 20);
-  //close button
-  noStroke();
-  fill(37, 142, 112); //X button
-  rect(950, 200, 50, 50, 5);
-  textSize(51);
-  textAlign(CENTER);
-  fill(255);
-  text(`X`, 950, 220);
 
-  //cedit text
-  textAlign(LEFT);
-  textSize(20)
-  text(`insert text here`, 150, 300);
-  text(`insert text here`, 150, 350);
-  text(`insert text here`, 150, 400);
-  text(`insert text here`, 150, 450);
-  text(`insert text here`, 150, 500);
-  text(`insert text here`, 150, 550);
-  text(`insert text here`, 150, 600);
-
-}
 
 function option() {
   gamestate = `pause`;
-  gameoverlay = `option`;
   //window
-  fill(0, 0, 0, 170)
+  fill(0, 0, 0, 70)
   rect(width / 2, height / 2, 900, 500, 20);
   //close button
   noStroke();
@@ -235,37 +216,75 @@ function option() {
 
 }
 
+function credit() {
+  gamestate = `pause`;
+  //window
+  fill(0, 0, 0, 70)
+  rect(width / 2, height / 2, 900, 500, 20);
+  //close button
+  noStroke();
+  fill(37, 142, 112); //X button
+  rect(950, 200, 50, 50, 5);
+  textSize(51);
+  textAlign(CENTER);
+  fill(255);
+  text(`X`, 950, 220);
+
+  //cedit text
+  textAlign(LEFT);
+  textSize(20)
+  text(`insert text here`, 150, 300);
+  text(`insert text here`, 150, 350);
+  text(`insert text here`, 150, 400);
+  text(`insert text here`, 150, 450);
+  text(`insert text here`, 150, 500);
+  text(`insert text here`, 150, 550);
+  text(`insert text here`, 150, 600);
+
+}
+
 function musicChecker() {
   d1 = dist(mouseX, mouseY, 217, 470);
   d2 = dist(mouseX, mouseY, 417, 470);
   d3 = dist(mouseX, mouseY, 617, 470);
   d4 = dist(mouseX, mouseY, 817, 470);
+
+  if (track === `1`) {
+    push();
+    fill(255, 0, 0);
+    circle(270, 450, 20);
+    pop();
+  } else if (track === `2`) {
+    push();
+    fill(255, 0, 0);
+    circle(470, 450, 20);
+    pop();
+  } else if (track === `3`) {
+    push();
+    fill(255, 0, 0);
+    circle(670, 450, 20);
+    pop();
+  } else if (track === `4`) {
+    push();
+    fill(255, 0, 0);
+    circle(870, 450, 20);
+    pop();
+  }
 }
 
 function musicSelector() {
   if (d1 < 30) {
-    musicH.o1 = 150
-    musicH.o2 = 100
-    musicH.o3 = 100
-    musicH.o4 = 100
+
+    track = `1`;
   }
   if (d2 < 30) {
-    musicH.o1 = 100
-    musicH.o2 = 150
-    musicH.o3 = 100
-    musicH.o4 = 100
+    track = `2`;
   }
   if (d3 < 30) {
-    musicH.o1 = 100
-    musicH.o2 = 100
-    musicH.o3 = 150
-    musicH.o4 = 100
+    track = `3`;
   }
   if (d4 < 30) {
-    musicH.o1 = 100
-    musicH.o2 = 100
-    musicH.o3 = 100
-    musicH.o4 = 150
+    track = `4`;
   }
 
 }
@@ -282,12 +301,13 @@ function mousePressed() {
     //option screen
     if ((mouseX > 550 - 200) && (mouseX < 550 + 400) &&
       (mouseY > 400 - 35) && (mouseY < 400 + 35)) {
-      option();
+      gameoverlay = `option`
+
     }
     //cedit screen
     if ((mouseX > 550 - 200) && (mouseX < 550 + 400) &&
       (mouseY > 532 - 35) && (mouseY < 532 + 35)) {
-      credit();
+      gameoverlay = `credit`;
     }
   }
   //interaction of overlay
@@ -297,6 +317,7 @@ function mousePressed() {
       (mouseY > 200 - 25) && (mouseY < 200 + 25)) {
       menu();
       gamestate = `playing`;
+      gameoverlay = `no`;
     }
 
     // music selector
