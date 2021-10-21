@@ -17,7 +17,8 @@ let gameoverlay = `no` //(no, gover,goption,option,credit)
 
 //assets
 let menuImage = `assets/images/Menu/menuImage.jpg`;
-
+let dragoonImage = `assets/images/game/dragoon.png`;
+let dragooneggImage = `assets/images/game/dragoon_egg.png`;
 
 //music
 let mVolume = 0.5; //slider for volume
@@ -38,10 +39,10 @@ let d4 = 50;
 //game
 let dragoons = [];
 let dragoonstate = `out`; //in or out of the pen
-let flock = 5;
+let flock = 2;
 let dragooneggs = [];
 let dragooneggstate = `out`; //in or out of the pen
-let eggs = 3;
+let eggs = 2;
 
 //buttons
 let mbutton1;
@@ -49,10 +50,15 @@ let mbutton2;
 let mbutton3;
 
 function preload() {
-
+  //image preload
   menuImage = loadImage(`assets/images/Menu/menuImage.jpg`);
+  dragoonImage = loadImage(`assets/images/game/dragoon.png`);
+  dragooneggImage = loadImage(`assets/images/game/dragoon_egg.png`);
+
+  //track preload
   track1 = loadSound(`assets/sounds/Trial and Error.mp3`);
   track2 = loadSound(`assets/sounds/bark.wav`);
+
 }
 // setup()
 // Only canvas + random generator
@@ -187,6 +193,8 @@ function createDragoons(x, y) {
     x: x,
     y: y,
     size: 25,
+    height: 35,
+    length: 35,
     state: `out`,
   }
   return dragoons;
@@ -194,9 +202,11 @@ function createDragoons(x, y) {
 
 function displayDragoons(dragoons) {
   push();
-  noStroke();
-  fill(126, 78, 172);
-  circle(dragoons.x, dragoons.y, dragoons.size);
+  // noStroke();
+  // fill(126, 78, 172);
+  // circle(dragoons.x, dragoons.y, dragoons.size);
+  imageMode(CENTER);
+  image(dragoonImage, dragoons.x, dragoons.y, dragoons.height, dragoons.length);
   pop();
   //constrain the dragoons
   dragoons.x = constrain(dragoons.x, 20, width);
@@ -210,9 +220,11 @@ function createDragooneggs(x, y) {
     x: x,
     y: y,
     size: 35,
+    height: 25,
+    length: 35,
     vx: 0,
     vy: 0,
-    speed: 0.2,
+    speed: 0.3,
     state: `out`,
   }
   return dragooneggs;
@@ -220,9 +232,11 @@ function createDragooneggs(x, y) {
 
 function displayDragooneggs(dragooneggs) {
   push();
-  noStroke();
-  fill(255);
-  circle(dragooneggs.x, dragooneggs.y, dragooneggs.size);
+  // noStroke();
+  // fill(255);
+  //circle(dragooneggs.x, dragooneggs.y, dragooneggs.size);
+  imageMode(CENTER);
+  image(dragooneggImage, dragooneggs.x, dragooneggs.y, dragooneggs.height, dragooneggs.length);
   pop();
 
 
@@ -262,15 +276,18 @@ function gameover() {
       dragooneggs[i].state = `in`;
     }
   }
+  dragoonstate = 'in';
+
   for (let i = 0; i < dragoons.length; i++) {
-    if (dragoons[i].state === `in`) {
-      dragoonstate = `in`;
+    if (dragoons[i].state != `in`) {
+      dragoonstate = `out`;
     }
 
   }
+  dragooneggstate = 'in';
   for (let i = 0; i < dragooneggs.length; i++) {
-    if (dragooneggs[i].state === `in`) {
-      dragooneggstate = `in`;
+    if (dragooneggs[i].state != `in`) {
+      dragooneggstate = `out`;
     }
   }
   if ((dragoonstate === `in`) && (dragooneggstate === `in`)) {
