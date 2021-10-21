@@ -8,9 +8,14 @@ sheep game where you regroup the Sheep
 **************************************************/
 //game state
 let gamescreen = `menu`; //(menu, game)
+
+//in the function
 let gamestate = `playing`; //(playing, pause,)
-let gamepause = `npause`; //(pause, option,cedit)
-let gameoverlay = `no` //(no, gpause,option,credit)
+
+//in the draw function+interaction
+let gameoverlay = `no` //(no, gover,goption,option,credit)
+
+//assets
 let menuImage = `assets/images/Menu/menuImage.jpg`;
 
 
@@ -23,7 +28,6 @@ let track1 = `assets/sounds/Trial and Error.mp3`;
 let track2 = `assets/sounds/bark.wav`;
 
 
-
 //distances
 //music
 let d1 = 50;
@@ -33,12 +37,11 @@ let d4 = 50;
 
 //game
 let dragoons = [];
+let dragoonstate = `out`; //in or out of the pen
 let flock = 5;
 let dragooneggs = [];
+let dragooneggstate = `out`; //in or out of the pen
 let eggs = 3;
-
-//arrays looping
-// let atrackrectx= [220,420,620,820];
 
 //buttons
 let mbutton1;
@@ -52,7 +55,6 @@ function preload() {
   track2 = loadSound(`assets/sounds/bark.wav`);
 }
 // setup()
-//#258E70
 // Only canvas + random generator
 function setup() {
   createCanvas(1100, 800);
@@ -79,15 +81,16 @@ function draw() {
     }
   }
   //start game
-  if (gamescreen === `game`) {
-    // game runining (will check all the distance and the runing stuff)
-    //game set-up
-    gameRuning();
-    gamePieces();
-    checkDist();
-
+  if (gamestate === `playing`) {
+    if (gamescreen === `game`) {
+      // game runining (will check all the distance and the runing stuff)
+      //game set-up
+      gameRuning();
+      gamePieces();
+      checkDist();
+      gameover();
+    }
   }
-
   if (gameoverlay === `option`) {
     musicChecker();
     option();
@@ -116,7 +119,14 @@ function gameRuning() {
   line(135, 465,
     265, 465);
 
-  //dragoons drawing
+  //pause button
+  noStroke();
+  fill(37, 142, 112); //X buton
+  rect(1050, 50, 50, 50, 5);
+  textSize(35);
+  textAlign(CENTER);
+  fill(255);
+  text(`||`, 1050, 60);
 }
 
 function checkDist() {
@@ -177,6 +187,7 @@ function createDragoons(x, y) {
     x: x,
     y: y,
     size: 25,
+    state: `out`,
   }
   return dragoons;
 }
@@ -201,7 +212,8 @@ function createDragooneggs(x, y) {
     size: 35,
     vx: 0,
     vy: 0,
-    speed: 0.2
+    speed: 0.2,
+    state: `out`,
   }
   return dragooneggs;
 }
@@ -232,8 +244,46 @@ function moveDragooneggs(dragooneggs) {
 
 }
 
+function gameover() {
+  for (let i = 0; i < dragoons.length; i++) {
+    if ((dragoons[i].x > 200 - 55) &&
+      (dragoons[i].x < 200 + 55) &&
+      (dragoons[i].y > 400 - 55) &&
+      (dragoons[i].y < 400 + 55)) {
+      dragoons[i].state = `in`;
+    }
+
+  }
+  for (let i = 0; i < dragooneggs.length; i++) {
+    if ((dragooneggs[i].x > 200 - 45) &&
+      (dragooneggs[i].x < 200 + 45) &&
+      (dragooneggs[i].y > 400 - 45) &&
+      (dragooneggs[i].y < 400 + 45)) {
+      dragooneggs[i].state = `in`;
+    }
+  }
+  for (let i = 0; i < dragoons.length; i++) {
+    if (dragoons[i].state === `in`) {
+      dragoonstate = `in`;
+    }
+
+  }
+  for (let i = 0; i < dragooneggs.length; i++) {
+    if (dragooneggs[i].state === `in`) {
+      dragooneggstate = `in`;
+    }
+  }
+  if ((dragoonstate === `in`) && (dragooneggstate === `in`)) {
+    gamestate = `pause`
+    gameoverlay = `gover`
+  }
+  console.log(dragooneggstate)
+  console.log(dragoonstate)
+}
+
 function menu() {
   clear();
+  //bg
   image(menuImage, 0, 0, width, height);
 
 
@@ -252,7 +302,7 @@ function menu() {
 
 
 }
-//sets the buttons var
+
 function menubutton(y) {
   let mbutton = {
     x: width / 2,
@@ -272,18 +322,8 @@ function displayMButton(mbutton) {
 
 function option() {
   gamestate = `pause`;
-  //window
-  fill(0, 0, 0, 70)
-  rect(width / 2, height / 2, 900, 500, 20);
-  //close button
-  noStroke();
-  fill(37, 142, 112); //X buton
-  rect(950, 200, 50, 50, 5);
-  textSize(51);
-  textAlign(CENTER);
-  fill(255);
-  text(`X`, 950, 220);
-
+  windowOption();
+  //track loop
   let tdisplay = {
     rectx: 220,
     circx: 217,
@@ -309,28 +349,21 @@ function option() {
   textAlign(LEFT);
   textSize(16);
   text(`insert music name here`, 135, 420);
-
-
   // //track 2
   fill(255);
   textAlign(LEFT);
   textSize(16);
   text(`insert music name here`, 335, 420);
-
-
   // //track 3
   fill(255);
   textAlign(LEFT);
   textSize(16);
   text(`insert music name here`, 535, 420);
-
-
   // //track 4
   fill(255);
   textAlign(LEFT);
   textSize(16);
   text(`insert music name here`, 735, 420);
-
 
   //Volume
   fill(255);
@@ -340,6 +373,21 @@ function option() {
 
   // setting volume
   track1.setVolume(mVolume.value());
+
+}
+
+function windowOption() {
+  //window
+  fill(0, 0, 0, 70)
+  rect(width / 2, height / 2, 900, 500, 20);
+  //close button
+  noStroke();
+  fill(37, 142, 112); //X buton
+  rect(950, 200, 50, 50, 5);
+  textSize(51);
+  textAlign(CENTER);
+  fill(255);
+  text(`X`, 950, 220);
 
 }
 
@@ -359,18 +407,7 @@ function musicPlayer() {
 
 function credit() {
   gamestate = `pause`;
-  //window
-  fill(0, 0, 0, 70)
-  rect(width / 2, height / 2, 900, 500, 20);
-  //close button
-  noStroke();
-  fill(37, 142, 112); //X button
-  rect(950, 200, 50, 50, 5);
-  textSize(51);
-  textAlign(CENTER);
-  fill(255);
-  text(`X`, 950, 220);
-
+  windowOption();
   //cedit text
   textAlign(LEFT);
   textSize(20)
@@ -391,7 +428,6 @@ function musicChecker() {
   d4 = dist(mouseX, mouseY, 817, 470);
 
   if (track === `1`) {
-
     fill(255, 0, 0);
     circle(270, 450, 20);
     musicPlayer();
@@ -417,7 +453,6 @@ function musicChecker() {
 function musicSelector() {
   if (d1 < 30) {
     track = `1`;
-    // musicPlayer();
   }
   if (d2 < 30) {
     track = `2`;
@@ -428,12 +463,21 @@ function musicSelector() {
   if (d4 < 30) {
     track = `4`;
   }
-
 }
 
 function mousePressed() {
-
+  //overlay not on
   if (gamestate === `playing`) {
+    //pause button in game screen
+    if (gamescreen === `game`) {
+      // rect(1050, 50, 50, 50, 5);
+      if ((mouseX > 1050 - 50) && (mouseX < 1050 + 50) &&
+        (mouseY > 50 - 50) && (mouseY < 50 + 50)) {
+        gameoverlay = `option`
+      }
+    }
+
+    //interaction of the menu
     if (gamescreen === `menu`) {
       //play game
       if ((mouseX > 550 - 200) && (mouseX < 550 + 200) &&
@@ -459,6 +503,7 @@ function mousePressed() {
       }
     }
   }
+
   //interaction of overlay
   //close button
   if (gamestate === `pause`) {
@@ -468,7 +513,6 @@ function mousePressed() {
       gamestate = `playing`;
       gameoverlay = `no`;
       mVolume.hide();
-      console.log(`e`)
 
     }
 
