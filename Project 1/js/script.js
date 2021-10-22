@@ -137,8 +137,8 @@ function draw() {
     fill(255);
     text(`Replay`, width / 2, 285);
     text(`Options`, width / 2, 420);
-    textSize(30);
-    text(`Congradulation on gathering all the Dragoons and the eggs!`, width / 2, 550);
+    textSize(25);
+    text(`Good job on gathering all the Dragoons and the Hatchling!`, width / 2, 550);
 
   }
 }
