@@ -14,4 +14,5 @@ Accumula Town by Zame -https://www.youtube.com/watch?v=eAqFZaGnxoI
 Bring the Dragoons and Dragoon eggs home in the pen
 
 A/N:
+Goal: just make a relaxing game little the sheep herding ones I used to play younger and have some nice bgm in the back to listen too and customizable.
 Little herding game which I decided to theme after a liver that I am enjoying a lot at the moment called Selen Tatsuki. She is pretty funny and the rest of Nijisanji En too. If you have a chance check them out. ;)
