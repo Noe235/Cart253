@@ -12,3 +12,6 @@ Forgotten Memories -https://dova-s.jp/
 Accumula Town by Zame -https://www.youtube.com/watch?v=eAqFZaGnxoI
 
 Bring the Dragoons and Dragoon eggs home in the pen
+
+A/N:
+Little herding game which I decided to theme after a liver that I am enjoying a lot at the moment called Selen Tatsuki. She is pretty funny and the rest of Nijisanji En too. If you have a chance check them out. ;)

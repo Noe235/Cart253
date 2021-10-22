@@ -25,7 +25,7 @@ let mVolume = 0.5; //slider for volume
 let musicPlaying = `false`;
 let musiccolor = 10;
 let track = `1`; //number adds a red dot
-let track1 = `assets/sounds/雨上がりの午後.mp3`; //sleen outro bgm
+let track1 = `assets/sounds/雨上がりの午後.mp3`; //selen outro bgm
 let track2 = `assets/sounds/やさしいじかん.mp3`; //elira bgm
 let track3 = `assets/sounds/忘れた記憶.mp3`; //selen bgm
 let track4 = `assets/sounds/Accumula Town.mp3`; //furret walk
@@ -93,6 +93,7 @@ function setup() {
 //
 // Description of draw() goes here.
 function draw() {
+  //adjust volume all the time
   adjVolume();
 
   if (gamescreen === `menu`) {
@@ -130,12 +131,14 @@ function draw() {
     displayMButton(mbutton1);
     displayMButton(mbutton2);
 
-    //Menu text
+    //gover text
     textSize(51);
     textAlign(CENTER);
     fill(255);
     text(`Replay`, width / 2, 285);
     text(`Options`, width / 2, 420);
+    textSize(30);
+    text(`Congradulation on gathering all the Dragoons and the eggs!`, width / 2, 550);
 
   }
 }
@@ -175,14 +178,16 @@ function gameRuning() {
   //intructions
   textAlign(LEFT);
   textSize(25)
-  text(`Bring all the Dragoons and Hatching in the pen with your mouse`, 10, 30);
+  text(`Bring all the Dragoons and Hatchling in the pen with your mouse`, 10, 30);
 }
 
 function checkDist() {
+  //check the distance for mouse movement
+  //for the dragoons
   for (let i = 0; i < dragoons.length; i++) {
     let dis = dist(mouseX, mouseY, dragoons[i].x, dragoons[i].y)
 
-    if (dis < 17) {
+    if (dis < 20) {
       if (mouseX > dragoons[i].x) { //mouse is on the right
         dragoons[i].x -= 10
       }
@@ -197,6 +202,7 @@ function checkDist() {
       }
     }
   }
+  // for the eggs
   for (let i = 0; i < dragooneggs.length; i++) {
     let disegg = dist(mouseX, mouseY, dragooneggs[i].x, dragooneggs[i].y)
 
@@ -236,8 +242,8 @@ function createDragoons(x, y) {
     x: x,
     y: y,
     size: 25,
-    height: 35,
-    length: 35,
+    height: 45,
+    length: 45,
     state: `out`,
   }
   return dragoons;
@@ -251,9 +257,9 @@ function displayDragoons(dragoons) {
   imageMode(CENTER);
   image(dragoonImage, dragoons.x, dragoons.y, dragoons.height, dragoons.length);
   pop();
-  //constrain the dragoons
-  dragoons.x = constrain(dragoons.x, 20, width);
-  dragoons.y = constrain(dragoons.y, 20, height);
+  //constrain the dragoons to the canvas
+  dragoons.x = constrain(dragoons.x, 30, width - 30);
+  dragoons.y = constrain(dragoons.y, 30, height - 30);
 
 
 }
@@ -286,6 +292,7 @@ function displayDragooneggs(dragooneggs) {
 }
 
 function moveDragooneggs(dragooneggs) {
+  //movement of the eggs
   let change = random(0, 1);
   if (change < 0.05) {
     dragooneggs.vx = random(-dragooneggs.speed, dragooneggs.speed);
@@ -295,13 +302,14 @@ function moveDragooneggs(dragooneggs) {
   dragooneggs.x += dragooneggs.vx;
   dragooneggs.y += dragooneggs.vy;
 
-  //constrain the eggs
-  dragooneggs.x = constrain(dragooneggs.x, 20, width);
-  dragooneggs.y = constrain(dragooneggs.y, 20, height);
+  //constrain the eggs to the canvas
+  dragooneggs.x = constrain(dragooneggs.x, 30, width - 30);
+  dragooneggs.y = constrain(dragooneggs.y, 30, height - 30);
 
 }
 
 function gameover() {
+  //check if the dragoons are inside the pen
   for (let i = 0; i < dragoons.length; i++) {
     if ((dragoons[i].x > 200 - 55) &&
       (dragoons[i].x < 200 + 55) &&
@@ -311,6 +319,7 @@ function gameover() {
     }
 
   }
+  //check if the eggs are inside the pen
   for (let i = 0; i < dragooneggs.length; i++) {
     if ((dragooneggs[i].x > 200 - 45) &&
       (dragooneggs[i].x < 200 + 45) &&
@@ -429,9 +438,6 @@ function option() {
   textAlign(LEFT);
   textSize(40);
   text(`Volume`, 150, 640);
-
-
-
 }
 
 function windowOption() {
@@ -450,6 +456,7 @@ function windowOption() {
 }
 
 function musicPlayer() {
+  //stop all track and loop teh corresponding
   if (track === `1`)
     if (!track1.isPlaying()) {
       track1.stop()
@@ -513,6 +520,7 @@ function credit() {
 }
 
 function musicChecker() {
+  //check the play buttons
   d1 = dist(mouseX, mouseY, 217, 470);
   d2 = dist(mouseX, mouseY, 417, 470);
   d3 = dist(mouseX, mouseY, 617, 470);
@@ -545,6 +553,7 @@ function musicChecker() {
 }
 
 function musicSelector() {
+  //change the tracks
   if (d1 < 30) {
     track = `1`;
   }
