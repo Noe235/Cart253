@@ -121,6 +121,9 @@ function draw() {
 function adjVolume() {
   // setting volume
   track1.setVolume(mVolume.value());
+  track2.setVolume(mVolume.value());
+  track3.setVolume(mVolume.value());
+  track4.setVolume(mVolume.value());
 }
 
 function gameRuning() {
@@ -427,8 +430,12 @@ function musicPlayer() {
       track2.stop()
       track3.stop()
       track4.stop()
-      track2.loop();
-    } else if (track === `2`) {
+      track1.loop();
+    }
+}
+
+function playtrack2() {
+  if (track === `2`) {
     if (!track2.isPlaying()) {
       track1.stop()
       track2.stop()
@@ -436,7 +443,11 @@ function musicPlayer() {
       track4.stop()
       track2.loop();
     }
-  } else if (track === `3`) {
+  }
+}
+
+function playtrack3() {
+  if (track === `3`) {
     if (!track3.isPlaying()) {
       track1.stop()
       track2.stop()
@@ -444,7 +455,11 @@ function musicPlayer() {
       track4.stop()
       track3.loop();
     }
-  } else if (track === `4`) {
+  }
+}
+
+function playtrack4() {
+  if (track === `4`) {
     if (!track4.isPlaying()) {
       track1.stop()
       track2.stop()
@@ -453,9 +468,8 @@ function musicPlayer() {
       track4.loop();
     }
   }
-
-
 }
+
 
 function credit() {
   gamestate = `pause`;
@@ -488,19 +502,19 @@ function musicChecker() {
 
     fill(255, 0, 0);
     circle(470, 450, 20);
-    musicPlayer();
+    playtrack2();
 
   } else if (track === `3`) {
 
     fill(255, 0, 0);
     circle(670, 450, 20);
-    musicPlayer();
+    playtrack3();
 
   } else if (track === `4`) {
 
     fill(255, 0, 0);
     circle(870, 450, 20);
-    musicPlayer();
+    playtrack4();
 
   }
 }
