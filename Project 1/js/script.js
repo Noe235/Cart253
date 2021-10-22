@@ -514,7 +514,7 @@ function credit() {
   textSize(20)
   text(`Menu background by brgfx -www.freepik.com`, 150, 300);
   text(`dragoons by Selen Tatsuki -https://twitter.com/selen_tatsuki/status/1432534022308212750`, 150, 350);
-  text(`dragoons egg by Selent Tatsuki -https://twitter.com/selen_tatsuki/status/1432534022308212750`, 150, 400);
+  text(`dragoons egg by Selen Tatsuki -https://twitter.com/selen_tatsuki/status/1432534022308212750`, 150, 400);
   text(`Afternoon after rain -https://dova-s.jp/`, 150, 450);
   text(`Easy time -https://dova-s.jp/`, 150, 500);
   text(`Forgotten Memories -https://dova-s.jp/`, 150, 550);
