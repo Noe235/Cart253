@@ -84,7 +84,7 @@ function setup() {
   for (let i = 0; i < eggs; i++) {
     dragooneggs[i] = createDragooneggs(random(20, width), random(20, height));
   }
-  mVolume = createSlider(0, 0.3, 0.1, 0.001);
+  mVolume = createSlider(0, 0.3, 0.07, 0.001);
   // mVolume.position(150, 650);
   mVolume.style(`width`, `800px`);
 
@@ -367,6 +367,9 @@ function menu() {
   text(`Play`, width / 2, 285);
   text(`Options`, width / 2, 420);
   text(`Credit`, width / 2, 550);
+  textSize(20);
+  textAlign(LEFT);
+  text(`Press Options to choose a BGM`, 0, 795);
 
 
 }
@@ -437,7 +440,7 @@ function option() {
   fill(255);
   textAlign(LEFT);
   textSize(40);
-  text(`Volume`, 150, 640);
+  text(`Volume`, 350, 795);
 }
 
 function windowOption() {
