@@ -25,8 +25,10 @@ let mVolume = 0.5; //slider for volume
 let musicPlaying = `false`;
 let musiccolor = 10;
 let track = `1`; //number adds a red dot
-let track1 = `assets/sounds/Trial and Error.mp3`;
-let track2 = `assets/sounds/bark.wav`;
+let track1 = `assets/sounds/雨上がりの午後.mp3`; //sleen outro bgm
+let track2 = `assets/sounds/やさしいじかん.mp3`; //elira bgm
+let track3 = `assets/sounds/忘れた記憶.mp3`; //selen bgm
+let track4 = `assets/sounds/Accumula Town.mp3`; //furret walk
 
 
 //distances
@@ -56,8 +58,10 @@ function preload() {
   dragooneggImage = loadImage(`assets/images/game/dragoon_egg.png`);
 
   //track preload
-  track1 = loadSound(`assets/sounds/Trial and Error.mp3`);
-  track2 = loadSound(`assets/sounds/bark.wav`);
+  track1 = loadSound(`assets/sounds/雨上がりの午後.mp3`); //selen outro bgm
+  track2 = loadSound(`assets/sounds/やさしいじかん.mp3`); //elira bgm
+  track3 = loadSound(`assets/sounds/忘れた記憶.mp3`); //selen bgm
+  track4 = loadSound(`assets/sounds/Accumula Town.mp3`); //furret walk
 
 }
 // setup()
@@ -76,11 +80,16 @@ function setup() {
   for (let i = 0; i < eggs; i++) {
     dragooneggs[i] = createDragooneggs(random(20, width), random(20, height));
   }
+  mVolume = createSlider(0, 0.3, 0.1, 0.001);
+  // mVolume.position(150, 650);
+  mVolume.style(`width`, `800px`);
+
 }
 // draw()
 //
 // Description of draw() goes here.
 function draw() {
+  adjVolume();
   if (gamescreen === `menu`) {
     if (gameoverlay === `no`) {
       menu();
@@ -107,6 +116,11 @@ function draw() {
     credit();
   }
 
+}
+
+function adjVolume() {
+  // setting volume
+  track1.setVolume(mVolume.value());
 }
 
 function gameRuning() {
@@ -294,8 +308,7 @@ function gameover() {
     gamestate = `pause`
     gameoverlay = `gover`
   }
-  console.log(dragooneggstate)
-  console.log(dragoonstate)
+
 }
 
 function menu() {
@@ -365,31 +378,30 @@ function option() {
   fill(255);
   textAlign(LEFT);
   textSize(16);
-  text(`insert music name here`, 135, 420);
+  text(`Afternoon after rain`, 135, 420); //Selen outro
   // //track 2
   fill(255);
   textAlign(LEFT);
   textSize(16);
-  text(`insert music name here`, 335, 420);
+  text(`Easy Time`, 365, 420); //elira BGM
   // //track 3
   fill(255);
   textAlign(LEFT);
   textSize(16);
-  text(`insert music name here`, 535, 420);
+  text(`Forgotten Memories`, 535, 420); //selen BGM
   // //track 4
   fill(255);
   textAlign(LEFT);
   textSize(16);
-  text(`insert music name here`, 735, 420);
+  text(`Accumula Town`, 755, 420); //Furret walk
 
   //Volume
   fill(255);
   textAlign(LEFT);
   textSize(40);
-  text(`Volume`, 150, 550);
+  text(`Volume`, 150, 640);
 
-  // setting volume
-  track1.setVolume(mVolume.value());
+
 
 }
 
@@ -409,17 +421,40 @@ function windowOption() {
 }
 
 function musicPlayer() {
-
-  // if (musicPlaying === `false`) {
-  //   track1.play()
-  //   musicPlaying = `true`;
-  // }
-  if (!track1.isPlaying()) {
-    //   track1.stop();
-    // } else {
-    track1.loop();
-
+  if (track === `1`)
+    if (!track1.isPlaying()) {
+      track1.stop()
+      track2.stop()
+      track3.stop()
+      track4.stop()
+      track2.loop();
+    } else if (track === `2`) {
+    if (!track2.isPlaying()) {
+      track1.stop()
+      track2.stop()
+      track3.stop()
+      track4.stop()
+      track2.loop();
+    }
+  } else if (track === `3`) {
+    if (!track3.isPlaying()) {
+      track1.stop()
+      track2.stop()
+      track3.stop()
+      track4.stop()
+      track3.loop();
+    }
+  } else if (track === `4`) {
+    if (!track4.isPlaying()) {
+      track1.stop()
+      track2.stop()
+      track3.stop()
+      track4.stop()
+      track4.loop();
+    }
   }
+
+
 }
 
 function credit() {
@@ -453,16 +488,19 @@ function musicChecker() {
 
     fill(255, 0, 0);
     circle(470, 450, 20);
+    musicPlayer();
 
   } else if (track === `3`) {
 
     fill(255, 0, 0);
     circle(670, 450, 20);
+    musicPlayer();
 
   } else if (track === `4`) {
 
     fill(255, 0, 0);
     circle(870, 450, 20);
+    musicPlayer();
 
   }
 }
@@ -508,9 +546,9 @@ function mousePressed() {
         gameoverlay = `option`
         //music sound adjusment
 
-        mVolume = createSlider(0, 1, 0.2, 0.01);
-        mVolume.position(150, 650);
-        mVolume.style(`width`, `800px`);
+        // mVolume = createSlider(0, 1, 0.1, 0.01);
+        // // mVolume.position(150, 650);
+        // mVolume.style(`width`, `800px`);
 
       }
       //cedit screen
@@ -529,7 +567,7 @@ function mousePressed() {
       menu();
       gamestate = `playing`;
       gameoverlay = `no`;
-      mVolume.hide();
+      // mVolume.hide();
 
     }
 
