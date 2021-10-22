@@ -41,10 +41,10 @@ let d4 = 50;
 //game
 let dragoons = [];
 let dragoonstate = `out`; //in or out of the pen
-let flock = 2;
+let flock = 1;
 let dragooneggs = [];
 let dragooneggstate = `out`; //in or out of the pen
-let eggs = 2;
+let eggs = 1;
 
 //buttons
 let mbutton1;
@@ -73,6 +73,10 @@ function setup() {
   mbutton2 = menubutton(height / 2);
   mbutton3 = menubutton(height * 2 / 3);
 
+  //random number of dragoon on the scrren
+  flock = random(1, 10);
+  eggs = random(1, 10);
+
   //making dragoons gving them position
   for (let i = 0; i < flock; i++) {
     dragoons[i] = createDragoons(random(20, width), random(20, height));
@@ -90,6 +94,7 @@ function setup() {
 // Description of draw() goes here.
 function draw() {
   adjVolume();
+
   if (gamescreen === `menu`) {
     if (gameoverlay === `no`) {
       menu();
@@ -116,6 +121,23 @@ function draw() {
     credit();
   }
 
+  if (gameoverlay === `gover`) {
+    //window
+    fill(0, 0, 0, 70)
+    rect(width / 2, height / 2, 900, 500, 20);
+
+    //buttons
+    displayMButton(mbutton1);
+    displayMButton(mbutton2);
+
+    //Menu text
+    textSize(51);
+    textAlign(CENTER);
+    fill(255);
+    text(`Replay`, width / 2, 285);
+    text(`Options`, width / 2, 420);
+
+  }
 }
 
 function adjVolume() {
@@ -150,6 +172,10 @@ function gameRuning() {
   textAlign(CENTER);
   fill(255);
   text(`||`, 1050, 60);
+  //intructions
+  textAlign(LEFT);
+  textSize(25)
+  text(`Bring all the Dragoons and Hatching in the pen with your mouse`, 10, 30);
 }
 
 function checkDist() {
@@ -470,7 +496,6 @@ function playtrack4() {
   }
 }
 
-
 function credit() {
   gamestate = `pause`;
   windowOption();
@@ -478,12 +503,12 @@ function credit() {
   textAlign(LEFT);
   textSize(20)
   text(`Menu background by brgfx -www.freepik.com`, 150, 300);
-  text(`insert text here`, 150, 350);
-  text(`insert text here`, 150, 400);
-  text(`insert text here`, 150, 450);
-  text(`insert text here`, 150, 500);
-  text(`insert text here`, 150, 550);
-  text(`insert text here`, 150, 600);
+  text(`dragoons by Selen Tatsuki -https://twitter.com/selen_tatsuki/status/1432534022308212750`, 150, 350);
+  text(`dragoons egg by Selent Tatsuki -https://twitter.com/selen_tatsuki/status/1432534022308212750`, 150, 400);
+  text(`Afternoon after rain -https://dova-s.jp/`, 150, 450);
+  text(`Easy time -https://dova-s.jp/`, 150, 500);
+  text(`Forgotten Memories -https://dova-s.jp/`, 150, 550);
+  text(`Accumula Town by Zame -https://www.youtube.com/watch?v=eAqFZaGnxoI`, 150, 600);
 
 }
 
@@ -592,5 +617,27 @@ function mousePressed() {
 
     }
   }
+  //gameover screen
+  if (gameoverlay === `gover`) {
+    //replay screen
+    if ((mouseX > 550 - 200) && (mouseX < 550 + 200) &&
+      (mouseY > 266 - 35) && (mouseY < 266 + 35)) {
+      gamescreen = `menu`;
+      gameoverlay = `no`;
+      gamestate = `playing`;
+      //making dragoons gving them position
+      for (let i = 0; i < flock; i++) {
+        dragoons[i] = createDragoons(random(20, width), random(20, height));
+      }
+      for (let i = 0; i < eggs; i++) {
+        dragooneggs[i] = createDragooneggs(random(20, width), random(20, height));
+      }
+    }
 
+    //option screen
+    if ((mouseX > 550 - 200) && (mouseX < 550 + 400) &&
+      (mouseY > 400 - 35) && (mouseY < 400 + 35)) {
+      gameoverlay = `option`
+    }
+  }
 }
