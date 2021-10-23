@@ -52,8 +52,9 @@ function draw() {
       displayEnviroment(lilypad[i]);
     }
 
+    //user ball
     user();
-
+    //check  the collision
     fishing();
 
   }
@@ -61,7 +62,9 @@ function draw() {
   if (gamestate === `pause`) {
     frameCount = 0
   }
+
   checkfishleft();
+  //check gameover condition
   gameover();
 
 }
@@ -118,6 +121,7 @@ function displayEnviroment(lilypad) {
   circle(lilypad.x, lilypad.y, lilypad.size);
 }
 
+//display the user
 function user() {
   fill(255, 0, 0);
   circle(mouseX, mouseY, 30);
@@ -152,13 +156,13 @@ function gameover() {
     badEnd();
 
   }
-  if (frameCount > 600) {
+  if (frameCount > 3600) { //1 minutes 
     gamestate = `pause`
     goverscreen();
     normalEnd();
   }
 }
-
+//overlay black
 function goverscreen() {
   fill(0);
   rectMode(CENTER);
@@ -167,7 +171,7 @@ function goverscreen() {
   rect(windowWidth * 2 / 4, windowHeight * 2.5 / 4, windowWidth / 4, windowHeight / 8);
 
 }
-
+//text
 function badEnd() {
   fill(255);
   textAlign(CENTER);
@@ -178,7 +182,7 @@ function badEnd() {
   text(0, windowWidth * 2 / 4, windowHeight * 2 / 4)
   text(`Replay`, windowWidth * 2 / 4, windowHeight * 2.5 / 4);
 }
-
+//text
 function normalEnd() {
   fill(255);
   textAlign(CENTER);
@@ -208,7 +212,7 @@ function mousePressed() {
       frameCount = 0;
       plants = random(5, 10)
       school = random(5, 20)
-      //create teh parameters of the fishies
+      //create the parameters of the fishies
       for (let i = 0; i < school; i++) {
         fish[i] = createFish(random(0, width), random(0, height), random(20, 50), random(1, 2.5));
       }
@@ -218,6 +222,7 @@ function mousePressed() {
         lilypad[i] = createLilypad(random(0, width), random(0, height), random(10, 200));
       }
     }
+    //reset the score
     fishcapture = 0
   }
 }
