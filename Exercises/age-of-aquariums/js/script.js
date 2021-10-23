@@ -4,6 +4,8 @@
 fishies catch
 noemie
 **************************************************/
+let gamestate = `playing` //playing or pause
+let gameoverlay = `no` //no or gover
 let fish = []
 let school = 5
 
@@ -11,6 +13,7 @@ let lilypad = []
 let plants = 5
 
 let fishcapture = 0
+let fishstate = `alive` //alive or caught
 // setup()
 //
 // Description of setup() goes here.
@@ -33,26 +36,29 @@ function setup() {
 //
 // Description of draw() goes here.
 function draw() {
-  background(149, 200, 216);
+  if (gamestate === `playing`) {
+    background(149, 200, 216);
 
 
-  for (let i = 0; i < fish.length; i++) {
-    moveFish(fish[i]);
+    for (let i = 0; i < fish.length; i++) {
+      moveFish(fish[i]);
+    }
+    for (let i = 0; i < fish.length; i++) {
+      displayFish(fish[i]);
+    }
+
+
+    for (let i = 0; i < lilypad.length; i++) {
+      displayEnviroment(lilypad[i]);
+    }
+
+    user();
+
+    fishing();
+
   }
-  for (let i = 0; i < fish.length; i++) {
-    displayFish(fish[i]);
-  }
-
-
-  for (let i = 0; i < lilypad.length; i++) {
-    displayEnviroment(lilypad[i]);
-  }
-
-  user();
-
-  fishing();
-
-
+  checkfishleft();
+  gameover();
 }
 
 function createFish(x, y, size, speed) {
@@ -120,13 +126,27 @@ function fishing() {
     if (d < 15 + (fish[i].size / 2)) {
       fish[i].caught = true
       fishcapture += 1;
-
+      fish[i].state = `caught`;
     }
   }
 }
 
-function remove() {
+function checkfishleft() {
+  fishstate = 'caught';
+  for (let i = 0; i < fish.length; i++) {
+    if (fish[i].state != `caught`) {
+      fishstate = `alive`;
+    }
+  }
+}
 
+function gameover() {
+  if (fishstate === `caught`) {
+    gamestate = `pause`
+  }
+  if (frameCount > 1800) {
+    gamestate = `pause`
+  }
 }
 
 function windowResized() {
