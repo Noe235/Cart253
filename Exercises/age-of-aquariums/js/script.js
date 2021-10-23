@@ -57,8 +57,13 @@ function draw() {
     fishing();
 
   }
+  //no duplication of the end screen
+  if (gamestate === `pause`) {
+    frameCount = 0
+  }
   checkfishleft();
   gameover();
+
 }
 
 function createFish(x, y, size, speed) {
@@ -143,10 +148,46 @@ function checkfishleft() {
 function gameover() {
   if (fishstate === `caught`) {
     gamestate = `pause`
+    goverscreen();
+    badEnd();
+
   }
-  if (frameCount > 1800) {
+  if (frameCount > 600) {
     gamestate = `pause`
+    goverscreen();
+    normalEnd();
   }
+}
+
+function goverscreen() {
+  fill(0);
+  rectMode(CENTER);
+  rect(windowWidth / 2, windowHeight / 2, windowWidth / 2, windowHeight / 2);
+  fill(121, 207, 184);
+  rect(windowWidth * 2 / 4, windowHeight * 2.5 / 4, windowWidth / 4, windowHeight / 8);
+
+}
+
+function badEnd() {
+  fill(255);
+  textAlign(CENTER);
+  textSize(30);
+  text(`Oh no, you captured `, windowWidth * 2 / 4, windowHeight * 1.5 / 4)
+  text(`all the fishes`, windowWidth * 2 / 4, windowHeight * 1.6 / 4)
+  text(`Score`, windowWidth * 2 / 4, windowHeight * 1.8 / 4)
+  text(0, windowWidth * 2 / 4, windowHeight * 2 / 4)
+  text(`Replay`, windowWidth * 2 / 4, windowHeight * 2.5 / 4);
+}
+
+function normalEnd() {
+  fill(255);
+  textAlign(CENTER);
+  textSize(30);
+  text(`Enough fishing, `, windowWidth * 2 / 4, windowHeight * 1.5 / 4)
+  text(`time to go home`, windowWidth * 2 / 4, windowHeight * 1.6 / 4)
+  text(`Score`, windowWidth * 2 / 4, windowHeight * 1.8 / 4)
+  text(fishcapture, windowWidth * 2 / 4, windowHeight * 2 / 4)
+  text(`Replay`, windowWidth * 2 / 4, windowHeight * 2.5 / 4);
 }
 
 function windowResized() {
@@ -154,5 +195,29 @@ function windowResized() {
   //re put the lily pads
   for (let i = 0; i < plants; i++) {
     lilypad[i] = createLilypad(random(0, width), random(0, height), random(10, 200));
+  }
+}
+
+function mousePressed() {
+  if (gamestate === `pause`) {
+    if ((mouseX > windowWidth * 2 / 4 - windowWidth / 4) &&
+      (mouseX < windowWidth * 2 / 4 + windowWidth / 4) &&
+      (mouseY > windowHeight * 2.5 / 4 - windowHeight / 8) &&
+      (mouseY < windowHeight * 2.5 / 4 + windowHeight / 8)) {
+      gamestate = `playing`
+      frameCount = 0;
+      plants = random(5, 10)
+      school = random(5, 20)
+      //create teh parameters of the fishies
+      for (let i = 0; i < school; i++) {
+        fish[i] = createFish(random(0, width), random(0, height), random(20, 50), random(1, 2.5));
+      }
+
+      //create the place of  the lilypads
+      for (let i = 0; i < plants; i++) {
+        lilypad[i] = createLilypad(random(0, width), random(0, height), random(10, 200));
+      }
+    }
+    fishcapture = 0
   }
 }
