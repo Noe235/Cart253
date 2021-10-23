@@ -328,7 +328,7 @@ function gameover() {
       dragooneggs[i].state = `in`;
     }
   }
-  dragoonstate = 'in';
+  // dragoonstate = 'in';
 
   for (let i = 0; i < dragoons.length; i++) {
     if (dragoons[i].state != `in`) {
@@ -336,7 +336,7 @@ function gameover() {
     }
 
   }
-  dragooneggstate = 'in';
+  // dragooneggstate = 'in';
   for (let i = 0; i < dragooneggs.length; i++) {
     if (dragooneggs[i].state != `in`) {
       dragooneggstate = `out`;
