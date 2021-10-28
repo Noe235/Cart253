@@ -10,11 +10,9 @@ class Ball {
     this.maxSpeed = 10;
     this.size = 40;
     this.active = true;
+    this.alive = `no`;
   }
 
-  gravity(force) {
-    this.ay = this.ay + force;
-  }
 
   move() {
     this.vx = this.vx + this.ax;
@@ -29,6 +27,9 @@ class Ball {
     if (this.y - this.size / 2 > height) {
       this.active = false;
     }
+    // if (this.y - this.size / 2 < 1) {
+    //   this.active = false;
+    // }
   }
 
   bounce(paddle) {
@@ -45,7 +46,14 @@ class Ball {
       this.ay = 0;
     }
   }
-
+  //add side borders
+  border() {
+    if (this.x < 0 || this.x > windowWidth) {
+      // Bounce
+      this.vx = -this.vx;
+      this.ay = 0;
+    }
+  }
 
   display() {
     push();

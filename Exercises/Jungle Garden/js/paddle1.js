@@ -21,7 +21,7 @@ class Paddle1 {
     fill(255);
     noStroke();
     rectMode(CENTER);
-    rect(this.x, this.y, this.width, this.height);
+    rect(this.x, this.y, this.width, this.height, 10);
     pop();
   }
 
