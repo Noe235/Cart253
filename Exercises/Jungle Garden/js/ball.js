@@ -4,7 +4,7 @@ class Ball {
     this.x = x;
     this.y = y;
     this.vx = 0;
-    this.vy = 0;
+    this.vy = 1;
     this.ax = 0;
     this.ay = 1;
     this.maxSpeed = 10;
@@ -12,9 +12,13 @@ class Ball {
     this.active = true;
     this.alive = `no`;
   }
+  add() {
+    this.maxSpeed = this.maxSpeed + (level * 2);
 
+  }
 
   move() {
+    console.log(this.maxSpeed);
     this.vx = this.vx + this.ax;
     this.vy = this.vy + this.ay;
 

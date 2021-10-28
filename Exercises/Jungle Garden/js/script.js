@@ -7,7 +7,8 @@ Noemie
 "use strict";
 
 let gamestate = `menu` //menu, playing, gover
-
+let levelclear = false;
+let level = 0
 
 let paddle1;
 let paddle2;
@@ -15,7 +16,9 @@ let paddle2;
 let balls = [];
 let numBalls = 10;
 let ballstate = `yes`;
+
 let score = 0;
+let clock = 0;
 
 
 function setup() {
@@ -33,6 +36,7 @@ function setup() {
 }
 
 function draw() {
+  console.log(levelclear)
   if (gamestate === `menu`) {
     background(0);
     fill(255);
@@ -74,10 +78,14 @@ function draw() {
     }
 
   }
-  console.log(ballstate);
-
+  clearinglevel();
   if (gamestate === `gover`) {
-    gameoverscreen();
+    if (levelclear === false) {
+      gameoverscreen();
+    } else if (levelclear === true) {
+      nextlevelscreen();
+
+    }
   }
 }
 
@@ -86,18 +94,37 @@ function mousePressed() {
     gamestate = `playing`;
   }
   if (gamestate === `gover`) {
-    gamestate = `playing`
-    score = 0;
-    paddle1 = new Paddle1(width / 4, 20);
-    paddle2 = new Paddle2(width / 4, 20);
+    if (levelclear === false) {
+      gamestate = `playing`
+      score = 0;
+      clock = 0
+      paddle1 = new Paddle1(width / 4, 20);
+      paddle2 = new Paddle2(width / 4, 20);
 
-    for (let i = 0; i < numBalls; i++) {
-      let x = random(0, width);
-      let y = random(10, height);
-      let ball = new Ball(x, y);
-      balls.push(ball);
+      for (let i = 0; i < numBalls; i++) {
+        let x = random(0, width);
+        let y = random(10, height);
+        let ball = new Ball(x, y);
+        balls.push(ball);
+      }
     }
+    if (levelclear === true) {
+      gamestate = `playing`
+      levelclear = false;
 
+      level += 1;
+      paddle1 = new Paddle1(width / 4, 20);
+      paddle2 = new Paddle2(width / 4, 20);
+
+      for (let i = 0; i < numBalls; i++) {
+        let x = random(0, width);
+        let y = random(10, height);
+        let ball = new Ball(x, y);
+        balls.push(ball);
+        ball.add();
+      }
+
+    }
   }
 }
 
@@ -122,6 +149,16 @@ function gameover() {
 
 }
 
+function nextlevelscreen() {
+  textAlign(CENTER);
+  fill(255);
+  textSize(30)
+  text(`Next Level`, width / 2, height / 4);
+  text(`Curent Score ${score}`, width / 2, height * 2.5 / 4);
+  text(`Click to Continue`, width / 2, height / 3);
+
+}
+
 function gameoverscreen() {
   textAlign(CENTER);
   fill(255);
@@ -134,4 +171,12 @@ function gameoverscreen() {
 
 function timer() {
   score++;
+  clock++;
+
+}
+
+function clearinglevel() {
+  if (clock > 7200) {
+    levelclear = true
+  }
 }
