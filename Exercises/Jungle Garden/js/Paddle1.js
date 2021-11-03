@@ -1,4 +1,4 @@
-class Paddleone {
+class Paddle1 {
 
   constructor(w, h) {
     this.width = w;
