@@ -10,9 +10,6 @@ let gamestate = `menu` //menu, playing, gover
 let levelclear = false;
 let level = 0
 
-let paddle1;
-let paddle2;
-
 let balls = [];
 let numBalls = 10;
 let ballstate = `yes`;
@@ -24,8 +21,8 @@ let clock = 0;
 function setup() {
   createCanvas(windowWidth, windowHeight);
 
-  paddle1 = new Paddle1(width / 4, 20);
-  paddle2 = new Paddle2(width / 4, 20);
+ let paddle1 = new Paddle1(width / 4, 20);
+  let paddle2 = new Paddle2(width / 4, 20);
 
   for (let i = 0; i < numBalls; i++) {
     let x = random(0, width);
