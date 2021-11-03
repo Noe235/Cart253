@@ -24,7 +24,7 @@ let clock = 0;
 function setup() {
   createCanvas(windowWidth, windowHeight);
 
- player1 = new Paddleone(width / 4, 20);
+ player1 = new Paddle1(width / 4, 20);
   player2 = new Paddle2(width / 4, 20);
 
   for (let i = 0; i < numBalls; i++) {
@@ -52,8 +52,8 @@ function draw() {
   if (gamestate === `playing`) {
     background(0);
     timer();
-    paddleone.move();
-    paddleone.display();
+    paddle1.move();
+    paddle1.display();
 
     paddle2.move();
     paddle2.display();
@@ -98,7 +98,7 @@ function mousePressed() {
       gamestate = `playing`
       score = 0;
       clock = 0
-      player1 = new Paddleone(width / 4, 20);
+      player1 = new Paddle1(width / 4, 20);
       player2 = new Paddle2(width / 4, 20);
 
       for (let i = 0; i < numBalls; i++) {
@@ -113,7 +113,7 @@ function mousePressed() {
       levelclear = false;
 
       level += 1;
-      player1 = new Paddleone(width / 4, 20);
+      player1 = new Paddle1(width / 4, 20);
       player2 = new Paddle2(width / 4, 20);
 
       for (let i = 0; i < numBalls; i++) {
