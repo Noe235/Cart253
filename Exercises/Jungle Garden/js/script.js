@@ -14,6 +14,9 @@ let balls = [];
 let numBalls = 10;
 let ballstate = `yes`;
 
+let player1= 0;
+let player2= 0;
+
 let score = 0;
 let clock = 0;
 
@@ -21,8 +24,8 @@ let clock = 0;
 function setup() {
   createCanvas(windowWidth, windowHeight);
 
- let paddle1 = new Paddle1(width / 4, 20);
-  let paddle2 = new Paddle2(width / 4, 20);
+ player1 = new Paddle1(width / 4, 20);
+  player2 = new Paddle2(width / 4, 20);
 
   for (let i = 0; i < numBalls; i++) {
     let x = random(0, width);
@@ -95,8 +98,8 @@ function mousePressed() {
       gamestate = `playing`
       score = 0;
       clock = 0
-      paddle1 = new Paddle1(width / 4, 20);
-      paddle2 = new Paddle2(width / 4, 20);
+      player1 = new Paddle1(width / 4, 20);
+      player2 = new Paddle2(width / 4, 20);
 
       for (let i = 0; i < numBalls; i++) {
         let x = random(0, width);
@@ -110,8 +113,8 @@ function mousePressed() {
       levelclear = false;
 
       level += 1;
-      paddle1 = new Paddle1(width / 4, 20);
-      paddle2 = new Paddle2(width / 4, 20);
+      player1 = new Paddle1(width / 4, 20);
+      player2 = new Paddle2(width / 4, 20);
 
       for (let i = 0; i < numBalls; i++) {
         let x = random(0, width);
