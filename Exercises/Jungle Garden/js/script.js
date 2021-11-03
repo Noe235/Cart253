@@ -14,8 +14,8 @@ let balls = [];
 let numBalls = 10;
 let ballstate = `yes`;
 
-let player1= 0;
-let player2= 0;
+let player1 = 0;
+let player2 = 0;
 
 let score = 0;
 let clock = 0;
@@ -24,14 +24,14 @@ let clock = 0;
 function setup() {
   createCanvas(windowWidth, windowHeight);
 
- player1 = new Paddle1(width / 4, 20);
+  player1 = new Paddle1(width / 4, 20);
   player2 = new Paddle2(width / 4, 20);
 
   for (let i = 0; i < numBalls; i++) {
     let x = random(0, width);
     let y = random(1, height);
     let puck = new Ball(x, y);
-    balls.push( puck );
+    balls.push(puck);
   }
 }
 
