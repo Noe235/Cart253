@@ -28,7 +28,7 @@ function setup() {
     let x = random(0, width);
     let y = random(1, height);
     let puck = new Ball(x, y);
-    balls.push(ball);
+    balls.push(puck);
   }
 }
 
