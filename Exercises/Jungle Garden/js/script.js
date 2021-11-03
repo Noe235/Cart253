@@ -28,7 +28,7 @@ function setup() {
     let x = random(0, width);
     let y = random(1, height);
     let puck = new Ball(x, y);
-    balls.push(puck);
+    balls.push( puck );
   }
 }
 
@@ -101,8 +101,8 @@ function mousePressed() {
       for (let i = 0; i < numBalls; i++) {
         let x = random(0, width);
         let y = random(10, height);
-        let ball = new Ball(x, y);
-        balls.push(ball);
+        let puck = new Ball(x, y);
+        balls.push(puck);
       }
     }
     if (levelclear === true) {
@@ -116,8 +116,8 @@ function mousePressed() {
       for (let i = 0; i < numBalls; i++) {
         let x = random(0, width);
         let y = random(10, height);
-        let ball = new Ball(x, y);
-        balls.push(ball);
+        let puck = new Ball(x, y);
+        balls.push(puck);
         ball.add();
       }
 
