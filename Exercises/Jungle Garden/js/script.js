@@ -27,7 +27,7 @@ function setup() {
   for (let i = 0; i < numBalls; i++) {
     let x = random(0, width);
     let y = random(1, height);
-    let ball = new Ball(x, y);
+    let puck = new Ball(x, y);
     balls.push(ball);
   }
 }
@@ -57,7 +57,7 @@ function draw() {
 
 
     for (let i = 0; i < balls.length; i++) {
-      let ball = balls[i];
+      let puck = balls[i];
       if (ball.active) {
         ball.move();
         ball.bounce(paddle1);
