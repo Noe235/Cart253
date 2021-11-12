@@ -23,6 +23,15 @@ class Player {
     }
   }
 
+  display() {
+    push()
+    fill(255);
+    noStroke();
+    rectMode(CENTER);
+    rect(this.x, this.y, 20); //20 is place holdre since there will be a image
+    pop();
+  }
+
 
 
 
