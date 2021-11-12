@@ -26,10 +26,10 @@ class Player {
 
   display() {
     push()
-    fill(255);
+    fill(0, 64, 214);
     noStroke();
     rectMode(CENTER);
-    rect(this.x, this.y, 30); //20 is place holdre since there will be a image
+    rect(this.x, this.y, 50); //20 is place holdre since there will be a image
     pop();
     if (this.x > width) {
       this.x = 0
