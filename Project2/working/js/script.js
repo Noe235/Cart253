@@ -57,12 +57,24 @@ function draw() {
     text(`Click to start the game`, width / 2, height / 2);
     pop();
   }
+  if (gamestate === `over`) {
+    push();
+    textAlign(CENTER);
+    textSize(25);
+    fill(255);
+    text(`You lost all your lives`, width / 2, height / 2);
+    text(`Click to try again the game`, width / 2, height * 1.5 / 2);
+    pop();
 
+
+
+  }
   if (gamestate === `playing`) {
     user.display();
     user.controls();
 
     coinadd()
+    catching()
     for (let i = 0; i < fallingcoin.length; i++) {
       let money = fallingcoin[i];
       money.display();
@@ -75,16 +87,44 @@ function draw() {
     textAlign(CENTER);
     textSize(25);
     fill(255);
-    text(`Score ${score}`, width - 100, 50);
+    text(`Score ${score}`, width - 50, 50);
     pop();
+
+    push();
+    textAlign(CENTER);
+    textSize(25);
+    fill(255);
+    text(`Lives ${lives}`, 50, 50);
+    pop();
+
+    for (let i = 0; i < fallingcoin.length; i++) {
+      if (fallingcoin[i].y > width &&
+        fallingcoin[i].y < 900) {
+        lives = lives - 1;
+        fallingcoin[i].caught = true
+
+      }
+    }
+    if (lives === 0) {
+      gamestate = `over`;
+      for (let i = 0; i < fallingcoin.length; i++) {
+        fallingcoin[i].caught = true;
+      }
+    }
   }
 }
 
 function mousePressed() {
   if (gamestate === `no`) {
     gamestate = `playing`
+    lives = 3;
+    score = 0;
   }
-
+  if (gamestate === `over`) {
+    gamestate = `playing`
+    lives = 3;
+    score = 0;
+  }
 }
 
 function coinadd() {
@@ -98,7 +138,18 @@ function coinadd() {
     console.log(`new coin`);
   }
 }
+//^^^this might not tbe the best method to add the coins because
+// sometimes there is nothing or too much
 
 function catching() {
-
+  for (let i = 0; i < fallingcoin.length; i++) {
+    if ((fallingcoin[i].x >= user.x - 15) &&
+      (fallingcoin[i].x <= user.x + 65) &&
+      (fallingcoin[i].y >= user.y - 15) &&
+      (fallingcoin[i].y <= user.y + 65)) {
+      fallingcoin[i].caught = true
+      score++;
+    }
+  }
+  ///^^^^^watch out the array will get too big got to delete the one earlier ones.
 }

@@ -14,6 +14,8 @@ class Coin {
   falling() {
     if (this.caught === false) {
       this.y += this.speed;
+    } else {
+      this.y = 1000
     }
   }
 
