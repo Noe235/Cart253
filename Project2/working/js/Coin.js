@@ -1,21 +1,24 @@
 class Coin {
-  constructor(x, y) {
+  constructor(x, y, speed) {
     this.x = x;
     this.y = y;
     this.vx = 3;
     this.vy = 1;
-    this.speed = 1;
+    this.speed = speed;
 
     this.caught = false;
 
   }
 
-  if (this.caught === fasle) {
-    falling() {
-      this.y += this.vy;
-    }
 
-    display() {
+  falling() {
+    if (this.caught === false) {
+      this.y += this.speed;
+    }
+  }
+
+  display() {
+    if (this.caught === false) {
       push()
       fill(140, 64, 214);
       noStroke();
@@ -24,9 +27,9 @@ class Coin {
       pop();
 
     }
-
-
-
-
   }
+
+
+
+
 }

@@ -28,7 +28,7 @@ class Player {
     push()
     fill(0, 64, 214);
     noStroke();
-    rectMode(CENTER);
+    // rectMode(CENTER);
     rect(this.x, this.y, 50); //20 is place holdre since there will be a image
     pop();
     if (this.x > width) {
