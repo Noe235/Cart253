@@ -24,7 +24,7 @@ Description of setup
 */
 function setup() {
   createCanvas(600, 600);
-  user = new Player(width / 2, height * 3 / 2);
+  user = new Player(width / 2, height * 2.5 / 3);
 
 }
 
@@ -44,8 +44,8 @@ function draw() {
   }
 
   if (gamestate === `playing`) {
-    player.display();
-    player.move();
+    user.display();
+    user.controls();
   }
 
 
