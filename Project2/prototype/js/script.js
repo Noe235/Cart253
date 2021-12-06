@@ -61,10 +61,17 @@ let lives = 3;
 
 let user = undefined;
 
-let money = undefined;
+let money = {
+  caught: false,
+}
 let fallingcoin = [];
 let nbcoin = 3;
-
+let millieplayer = {
+  x: 0,
+  y: 700,
+  vx: 3,
+  active: true,
+};
 
 //buttons
 let mbutton1;
@@ -96,7 +103,7 @@ function setup() {
   // different game set up
   selen_setup();
 
-
+  millie_setup();
   // volume set-up
   // mVolume.position(150, 650);
   mVolume = createSlider(0, 0.3, 0.07, 0.001);
@@ -122,6 +129,14 @@ function draw() {
       rect(200, 25, 50);
       rect(200, 250, 50);
 
+
+      noStroke();
+      fill(37, 142, 112); //X buton
+      rect(1050, 50, 50, 50, 5);
+      textSize(35);
+      textAlign(CENTER);
+      fill(255);
+      text(`||`, 1050, 60);
     }
   }
 
@@ -410,8 +425,154 @@ function selen_gameover() {
 }
 
 // End of selen game
-
 // Millie game start
+function millie_setup() {
+  millieplayer.x = width / 2;
+  millieplayer.vx = 3;
+
+  // coin set up
+  for (let i = 0; i < nbcoin; i++) {
+    fallingcoin[i] = createStartCoin(random(20, width - 30), random(20, 50), random(0.5, 3));
+  }
+}
+
+function createStartCoin(x, y, speed) {
+  let money = {
+    x: x,
+    y: y,
+    size: 30,
+    speed: speed,
+    caught: false,
+  }
+  return money;
+}
+
+function millie_game() {
+  background(40);
+
+  //pause buttons
+  noStroke();
+  fill(37, 142, 112); //X buton
+  rect(1050, 50, 50, 50, 5);
+  textSize(35);
+  textAlign(CENTER);
+  fill(255);
+  text(`||`, 1050, 60);
+
+
+  if (money.caught === false) {
+    millie_player();
+    millie_coinadd();
+    millie_coin();
+    millie_coincatch();
+
+  }
+  millie_deletecoin();
+  push();
+  textAlign(CENTER);
+  textSize(25);
+  fill(255);
+  text(`Score ${score}`, width - 50, 100);
+  pop();
+
+  push();
+  textAlign(CENTER);
+  textSize(25);
+  fill(255);
+  text(`Lives ${lives}`, 50, 30);
+  pop();
+}
+
+function millie_player() {
+
+  push()
+  fill(0, 64, 214);
+  noStroke();
+  // rectMode(CENTER);
+  rect(millieplayer.x, millieplayer.y, 100); //20 is place holdre since there will be a image
+  pop();
+
+  //controls
+  if (keyIsDown(LEFT_ARROW)) {
+
+    millieplayer.x += -millieplayer.vx;
+
+  } else if (keyIsDown(RIGHT_ARROW)) {
+
+    millieplayer.x += millieplayer.vx;
+
+  }
+
+  if (millieplayer.x > width) {
+    millieplayer.x = 0
+  }
+  if (millieplayer.x < 0) {
+    millieplayer.x = width
+  }
+}
+
+function millie_coin() {
+  //display
+  for (let i = 0; i < fallingcoin.length; i++) {
+    millie_displaycoin(fallingcoin[i]);
+  }
+
+
+
+}
+
+function millie_coinadd() {
+  let chance = random(0, 1);
+  if (chance < 0.01) {
+    let newcoin = {
+      x: random(0, width - 30),
+      y: random(0, 50),
+      speed: random(0.5, 2),
+      size: 30,
+      caught: false,
+    }
+
+    fallingcoin.push(newcoin);
+    console.log(`new coin`);
+
+  }
+}
+
+function millie_displaycoin(money) {
+  // usual display
+  rect(money.x, money.y, money.size);
+
+  //falling
+  if (money.caught === false) {
+    money.y += money.speed;
+  }
+  if (money.caught === true) {
+    money.y = 1000
+  }
+}
+
+function millie_deletecoin() {
+  for (let i = 0; i < fallingcoin.length; i++) {
+    if (fallingcoin[i].y >= 1000) {
+      fallingcoin.splice(i, 1);
+      console.log('deleted')
+    }
+
+  }
+}
+
+function millie_coincatch() {
+  for (let i = 0; i < fallingcoin.length; i++) {
+    if ((fallingcoin[i].x >= millieplayer.x - 50) &&
+      (fallingcoin[i].x <= millieplayer.x + 50) &&
+      (fallingcoin[i].y >= millieplayer.y - 50) &&
+      (fallingcoin[i].y <= millieplayer.y + 50)) {
+      fallingcoin[i].caught = true;
+      score++;
+    }
+  }
+}
+// Millie game End
 function menu() {
   clear();
   //bg
@@ -498,6 +659,31 @@ function option() {
   textAlign(LEFT);
   textSize(16);
   text(`Accumula Town`, 755, 420); //Furret walk
+
+  if (gamescreen != 'menu') {
+    if (gamescreen === 'lobby') {
+      //lobby button
+      rectMode(CENTER);
+      noStroke();
+      fill(37, 142, 112); //pomu color
+      rect(width / 2, 575, 350, 100, 10);
+      fill(255);
+      textAlign(LEFT);
+      textSize(50);
+      text(`Back to menu`, 400, 595); //menu text
+    } else {
+      //lobby button
+      rectMode(CENTER);
+      noStroke();
+      fill(37, 142, 112); //pomu color
+      rect(width / 2, 575, 350, 100, 10);
+      fill(255);
+      textAlign(LEFT);
+      textSize(50);
+      text(`Back to lobby`, 400, 595); //lobby text
+    }
+  }
+
 
   //Volume
   fill(255);
@@ -637,12 +823,15 @@ function musicSelector() {
 function mousePressed() {
   //overlay not on
   if (gamestate === `playing`) {
+
+
     //pause button in game screen
-    if (gamescreen === `selen`) {
+    if (gamescreen != `menu`) {
       // rect(1050, 50, 50, 50, 5);
       if ((mouseX > 1050 - 50) && (mouseX < 1050 + 50) &&
         (mouseY > 50 - 50) && (mouseY < 50 + 50)) {
         gameoverlay = `option`
+
       }
     }
 
@@ -704,7 +893,24 @@ function mousePressed() {
       // mVolume.hide();
 
     }
-
+    //back to lobby in game (!=menu)
+    if (gamescreen != 'menu') {
+      if (gamescreen === 'lobby') {
+        if ((mouseX > width / 2 - 175) && (mouseX < width / 2 + 175) &&
+          (mouseY > 575 - 50) && (mouseY < 575 + 50)) {
+          gamescreen = `menu`
+          gamestate = `playing`;
+          gameoverlay = `no`;
+        }
+      } else {
+        if ((mouseX > width / 2 - 175) && (mouseX < width / 2 + 175) &&
+          (mouseY > 575 - 50) && (mouseY < 575 + 50)) {
+          gamescreen = `lobby`
+          gamestate = `playing`;
+          gameoverlay = `no`;
+        }
+      }
+    }
     // music selector
     if (gameoverlay === `option`) {
       musicSelector();
