@@ -26,6 +26,10 @@ let menuImage = `assets/images/Menu/menuImage.jpg`;
 let dragoonImage = `assets/images/game/dragoon.png`;
 let dragooneggImage = `assets/images/game/dragoon_egg.png`;
 
+let coinImage = `assets/images/game/coin.png`;
+let hatImage = `assets/images/game/Millie_hat.png`;
+let sewerImage = `assets/images/game/sewer.png`;
+
 //music
 let mVolume = 0.5; //slider for volume
 let musicPlaying = `false`;
@@ -59,7 +63,6 @@ let score = 0;
 let time = 3600;
 
 
-let user = undefined;
 
 let money = {
   caught: false,
@@ -81,8 +84,15 @@ let mbutton3;
 function preload() {
   //image preload
   menuImage = loadImage(`assets/images/Menu/menuImage.jpg`);
+  //selen
   dragoonImage = loadImage(`assets/images/game/dragoon.png`);
   dragooneggImage = loadImage(`assets/images/game/dragoon_egg.png`);
+
+  //millie
+  coinImage = loadImage(`assets/images/game/coin.png`);
+  hatImage = loadImage(`assets/images/game/Millie_hat.png`);
+  sewerImage = loadImage(`assets/images/game/sewer.png`);
+
 
   //track preload
   track1 = loadSound(`assets/sounds/雨上がりの午後.mp3`); //selen outro bgm
@@ -101,9 +111,7 @@ function setup() {
   mbutton3 = menubutton(height * 2 / 3);
 
   // different game set up
-  // selen_setup();
 
-  millie_setup();
   // volume set-up
   // mVolume.position(150, 650);
   mVolume = createSlider(0, 0.3, 0.07, 0.001);
@@ -173,9 +181,7 @@ function draw() {
 
     //buttons
     displayMButton(mbutton1);
-
     displayMButton(mbutton2);
-
     displayMButton(mbutton3);
 
 
@@ -188,6 +194,27 @@ function draw() {
     text(`Lobby`, width / 2, 550);
     textSize(25);
     text(`Good job on gathering all the Dragoons and the Hatchling!`, width / 2, 635);
+
+  }
+
+  if (gameoverlay === `millie_gover`) {
+    //window
+    fill(0, 0, 0, 70)
+    rect(width / 2, height / 2, 900, 500, 20);
+
+    //buttons
+    displayMButton(mbutton1);
+    displayMButton(mbutton2);
+    displayMButton(mbutton3);
+    //gover text
+    textSize(51);
+    textAlign(CENTER);
+    fill(255);
+    text(`Replay`, width / 2, 285);
+    text(`Options`, width / 2, 420);
+    text(`Lobby`, width / 2, 550);
+    textSize(25);
+    text(`Money gathered ${score}`, width / 2, 635);
 
   }
 }
@@ -437,7 +464,8 @@ function selen_gameover() {
 function millie_setup() {
   millieplayer.x = width / 2;
   millieplayer.vx = 3;
-
+  time = 3600;
+  score = 0;
   // coin set up
   for (let i = 0; i < nbcoin; i++) {
     fallingcoin[i] = createStartCoin(random(20, width - 30), random(20, 50), random(0.5, 3));
@@ -457,6 +485,8 @@ function createStartCoin(x, y, speed) {
 
 function millie_game() {
   background(40);
+  imageMode(CORNER);
+  image(sewerImage, 0, 0, width, height);
 
   timer();
   millie_gameover();
@@ -484,7 +514,7 @@ function millie_game() {
   textAlign(CENTER);
   textSize(25);
   fill(255);
-  text(`Score ${score}`, width - 50, 100);
+  text(`Money ${score}`, width - 70, 100);
   pop();
 
   push();
@@ -501,7 +531,8 @@ function millie_player() {
   fill(0, 64, 214);
   noStroke();
   // rectMode(CENTER);
-  rect(millieplayer.x, millieplayer.y, 100); //20 is place holdre since there will be a image
+  imageMode(CENTER);
+  image(hatImage, millieplayer.x, millieplayer.y, 200, 200); //20 is place holdre since there will be a image
   pop();
 
   //controls
@@ -552,7 +583,8 @@ function millie_coinadd() {
 
 function millie_displaycoin(money) {
   // usual display
-  rect(money.x, money.y, money.size);
+  imageMode(CENTER);
+  image(coinImage, money.x, money.y, money.size, money.size);
 
   //falling
   if (money.caught === false) {
@@ -898,6 +930,7 @@ function mousePressed() {
       if ((mouseX > 200 - 25) && (mouseX < 200 + 25) &&
         (mouseY > 250 - 25) && (mouseY < 250 + 25)) {
         gamescreen = `millie`
+        millie_setup();
 
       }
 
@@ -955,6 +988,31 @@ function mousePressed() {
       gamestate = `playing`;
       //making dragoons gving them position
       selen_setup();
+    }
+
+    //option screen
+    if ((mouseX > 550 - 200) && (mouseX < 550 + 400) &&
+      (mouseY > 400 - 35) && (mouseY < 400 + 35)) {
+      gameoverlay = `option`;
+    }
+
+    if ((mouseX > 550 - 200) && (mouseX < 550 + 400) &&
+      (mouseY > 532 - 35) && (mouseY < 532 + 35)) {
+      gamescreen = 'lobby';
+      gamestate = `playing`;
+      gameoverlay = 'no';
+    }
+  }
+  if (gameoverlay === `millie_gover`) {
+    //replay screen
+    if ((mouseX > 550 - 200) && (mouseX < 550 + 200) &&
+      (mouseY > 266 - 35) && (mouseY < 266 + 35)) {
+      gamescreen = `millie`;
+      gameoverlay = `no`;
+      gamestate = `playing`;
+
+      //making coins gving them position
+      millie_setup();
     }
 
     //option screen
