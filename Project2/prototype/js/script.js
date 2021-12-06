@@ -7,10 +7,16 @@ Noemie
 
 **************************************************/
 //game state
-let gamescreen = `menu`; //(menu, game)
+let gamescreen = `menu`; //(nameing the game after the people
+// menu,
+// lobby
+// selen
+//
+//
+// )
 
 //in the function
-let gamestate = `playing`; //(playing, pause,)
+let gamestate = `playing`; //(playing, pause, lobby)
 
 //in the draw function+interaction
 let gameoverlay = `no` //(no, gover,goption,option,credit)
@@ -38,13 +44,27 @@ let d2 = 50;
 let d3 = 50;
 let d4 = 50;
 
-//game
+//Dragoons game
 let dragoons = [];
 let dragoonstate = `out`; //in or out of the pen
 let flock = 1;
 let dragooneggs = [];
 let dragooneggstate = `out`; //in or out of the pen
 let eggs = 1;
+
+//millie games
+// let gamestate = `no` //playing or no
+
+let score = 0;
+let lives = 3;
+
+
+let user = undefined;
+
+let money = undefined;
+let fallingcoin = [];
+let nbcoin = 3;
+
 
 //buttons
 let mbutton1;
@@ -73,19 +93,13 @@ function setup() {
   mbutton2 = menubutton(height / 2);
   mbutton3 = menubutton(height * 2 / 3);
 
-  //random number of dragoon on the scrren
-  flock = random(1, 10);
-  eggs = random(1, 10);
+  // different game set up
+  selen_setup();
 
-  //making dragoons gving them position
-  for (let i = 0; i < flock; i++) {
-    dragoons[i] = createDragoons(random(20, width), random(20, height));
-  }
-  for (let i = 0; i < eggs; i++) {
-    dragooneggs[i] = createDragooneggs(random(20, width), random(20, height));
-  }
-  mVolume = createSlider(0, 0.3, 0.07, 0.001);
+
+  // volume set-up
   // mVolume.position(150, 650);
+  mVolume = createSlider(0, 0.3, 0.07, 0.001);
   mVolume.style(`width`, `800px`);
 
 }
@@ -101,17 +115,32 @@ function draw() {
       menu();
     }
   }
-  //start game
+  // setting the lobby
   if (gamestate === `playing`) {
-    if (gamescreen === `game`) {
-      // game runining (will check all the distance and the runing stuff)
-      //game set-up
-      gameRuning();
-      gamePieces();
-      checkDist();
-      gameover();
+    if (gamescreen === `lobby`) {
+      background(71, 179, 57);
+      rect(200, 25, 50);
+      rect(200, 250, 50);
+
     }
   }
+
+  //start different games
+  if (gamestate === `playing`) {
+    if (gamescreen === `selen`) {
+
+      selen_game();
+
+    }
+
+    if (gamescreen === `millie`) {
+
+      millie_game();
+    }
+
+  }
+
+
   if (gameoverlay === `option`) {
     musicChecker();
     option();
@@ -151,7 +180,37 @@ function adjVolume() {
   track4.setVolume(mVolume.value());
 }
 
-function gameRuning() {
+function selen_game() {
+  selen_main();
+  selen_pieces();
+  selen_checkdist();
+  selen_gameover();
+}
+// Selen Game
+function selen_setup() {
+  //random number of dragoon on the scrren
+  flock = random(1, 10);
+  eggs = random(1, 10);
+
+  // //----assign position to dragoons
+  // for (let i = 0; i < flock; i++) {
+  //   let x = random(20, width);
+  //   let y = random(20, width);
+  //   let dmember = new Dragoon(x, y);
+  //   dragoons.push(dmember);
+  // }
+
+  //making dragoons gving them position
+  for (let i = 0; i < flock; i++) {
+    dragoons[i] = createDragoons(random(20, width), random(20, height));
+  }
+
+  for (let i = 0; i < eggs; i++) {
+    dragooneggs[i] = createDragooneggs(random(20, width), random(20, height));
+  }
+}
+
+function selen_main() {
   background(71, 179, 57);
 
   //pen
@@ -181,49 +240,7 @@ function gameRuning() {
   text(`Bring all the Dragoons and Hatchling in the pen with your mouse`, 10, 30);
 }
 
-function checkDist() {
-  //check the distance for mouse movement
-  //for the dragoons
-  for (let i = 0; i < dragoons.length; i++) {
-    let dis = dist(mouseX, mouseY, dragoons[i].x, dragoons[i].y)
-
-    if (dis < 20) {
-      if (mouseX > dragoons[i].x) { //mouse is on the right
-        dragoons[i].x -= 10
-      }
-      if (mouseX < dragoons[i].x) { //mouse on the left
-        dragoons[i].x += 10
-      }
-      if (mouseY > dragoons[i].y) { //mouse is below
-        dragoons[i].y -= 10
-      }
-      if (mouseY < dragoons[i].y) { //mousse is above
-        dragoons[i].y += 10
-      }
-    }
-  }
-  // for the eggs
-  for (let i = 0; i < dragooneggs.length; i++) {
-    let disegg = dist(mouseX, mouseY, dragooneggs[i].x, dragooneggs[i].y)
-
-    if (disegg < 17) {
-      if (mouseX > dragooneggs[i].x) { //mouse is on the right
-        dragooneggs[i].x -= 10
-      }
-      if (mouseX < dragooneggs[i].x) { //mouse on the left
-        dragooneggs[i].x += 10
-      }
-      if (mouseY > dragooneggs[i].y) { //mouse is below
-        dragooneggs[i].y -= 10
-      }
-      if (mouseY < dragooneggs[i].y) { //mousse is above
-        dragooneggs[i].y += 10
-      }
-    }
-  }
-}
-
-function gamePieces() {
+function selen_pieces() {
   for (let i = 0; i < dragoons.length; i++) {
     displayDragoons(dragoons[i]);
   }
@@ -308,7 +325,50 @@ function moveDragooneggs(dragooneggs) {
 
 }
 
-function gameover() {
+function selen_checkdist() {
+  //check the distance for mouse movement
+  //for the dragoons
+  for (let i = 0; i < dragoons.length; i++) {
+    let dis = dist(mouseX, mouseY, dragoons[i].x, dragoons[i].y)
+
+    if (dis < 20) {
+      if (mouseX > dragoons[i].x) { //mouse is on the right
+        dragoons[i].x -= 10
+      }
+      if (mouseX < dragoons[i].x) { //mouse on the left
+        dragoons[i].x += 10
+      }
+      if (mouseY > dragoons[i].y) { //mouse is below
+        dragoons[i].y -= 10
+      }
+      if (mouseY < dragoons[i].y) { //mousse is above
+        dragoons[i].y += 10
+      }
+    }
+  }
+  // for the eggs
+  for (let i = 0; i < dragooneggs.length; i++) {
+    let disegg = dist(mouseX, mouseY, dragooneggs[i].x, dragooneggs[i].y)
+
+    if (disegg < 17) {
+      if (mouseX > dragooneggs[i].x) { //mouse is on the right
+        dragooneggs[i].x -= 10
+      }
+      if (mouseX < dragooneggs[i].x) { //mouse on the left
+        dragooneggs[i].x += 10
+      }
+      if (mouseY > dragooneggs[i].y) { //mouse is below
+        dragooneggs[i].y -= 10
+      }
+      if (mouseY < dragooneggs[i].y) { //mousse is above
+        dragooneggs[i].y += 10
+      }
+    }
+  }
+}
+
+
+function selen_gameover() {
   //check if the dragoons are inside the pen
   for (let i = 0; i < dragoons.length; i++) {
     if ((dragoons[i].x > 200 - 55) &&
@@ -349,6 +409,9 @@ function gameover() {
 
 }
 
+// End of selen game
+
+// Millie game start
 function menu() {
   clear();
   //bg
@@ -575,7 +638,7 @@ function mousePressed() {
   //overlay not on
   if (gamestate === `playing`) {
     //pause button in game screen
-    if (gamescreen === `game`) {
+    if (gamescreen === `selen`) {
       // rect(1050, 50, 50, 50, 5);
       if ((mouseX > 1050 - 50) && (mouseX < 1050 + 50) &&
         (mouseY > 50 - 50) && (mouseY < 50 + 50)) {
@@ -588,7 +651,7 @@ function mousePressed() {
       //play game
       if ((mouseX > 550 - 200) && (mouseX < 550 + 200) &&
         (mouseY > 266 - 35) && (mouseY < 266 + 35)) {
-        gamescreen = `game`
+        gamescreen = `lobby`
 
       }
       //option screen
@@ -607,6 +670,26 @@ function mousePressed() {
         (mouseY > 532 - 35) && (mouseY < 532 + 35)) {
         gameoverlay = `credit`;
       }
+
+    }
+    // lobby interaction
+    if (gamescreen === 'lobby') {
+      if ((mouseX > 200 - 25) && (mouseX < 200 + 25) &&
+        (mouseY > 25 - 25) && (mouseY < 25 + 25)) {
+        gamescreen = `selen`
+
+      }
+      if ((mouseX > 200 - 25) && (mouseX < 200 + 25) &&
+        (mouseY > 250 - 25) && (mouseY < 250 + 25)) {
+        gamescreen = `millie`
+
+      }
+
+
+
+
+
+
     }
   }
 
