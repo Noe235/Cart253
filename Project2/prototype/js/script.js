@@ -56,7 +56,7 @@ let eggs = 1;
 // let gamestate = `no` //playing or no
 
 let score = 0;
-let lives = 3;
+let time = 3600;
 
 
 let user = undefined;
@@ -101,7 +101,7 @@ function setup() {
   mbutton3 = menubutton(height * 2 / 3);
 
   // different game set up
-  selen_setup();
+  // selen_setup();
 
   millie_setup();
   // volume set-up
@@ -166,14 +166,18 @@ function draw() {
     credit();
   }
 
-  if (gameoverlay === `gover`) {
+  if (gameoverlay === `selen_gover`) {
     //window
     fill(0, 0, 0, 70)
     rect(width / 2, height / 2, 900, 500, 20);
 
     //buttons
     displayMButton(mbutton1);
+
     displayMButton(mbutton2);
+
+    displayMButton(mbutton3);
+
 
     //gover text
     textSize(51);
@@ -181,8 +185,9 @@ function draw() {
     fill(255);
     text(`Replay`, width / 2, 285);
     text(`Options`, width / 2, 420);
+    text(`Lobby`, width / 2, 550);
     textSize(25);
-    text(`Good job on gathering all the Dragoons and the Hatchling!`, width / 2, 550);
+    text(`Good job on gathering all the Dragoons and the Hatchling!`, width / 2, 635);
 
   }
 }
@@ -204,8 +209,8 @@ function selen_game() {
 // Selen Game
 function selen_setup() {
   //random number of dragoon on the scrren
-  flock = random(1, 10);
-  eggs = random(1, 10);
+  // flock = random(1, 10);
+  // eggs = random(1, 10);
 
   // //----assign position to dragoons
   // for (let i = 0; i < flock; i++) {
@@ -390,6 +395,7 @@ function selen_gameover() {
       (dragoons[i].x < 200 + 55) &&
       (dragoons[i].y > 400 - 55) &&
       (dragoons[i].y < 400 + 55)) {
+
       dragoons[i].state = `in`;
     }
 
@@ -400,10 +406,11 @@ function selen_gameover() {
       (dragooneggs[i].x < 200 + 45) &&
       (dragooneggs[i].y > 400 - 45) &&
       (dragooneggs[i].y < 400 + 45)) {
+
       dragooneggs[i].state = `in`;
     }
   }
-  // dragoonstate = 'in';
+  dragoonstate = 'in';
 
   for (let i = 0; i < dragoons.length; i++) {
     if (dragoons[i].state != `in`) {
@@ -411,15 +418,16 @@ function selen_gameover() {
     }
 
   }
-  // dragooneggstate = 'in';
+  dragooneggstate = 'in';
   for (let i = 0; i < dragooneggs.length; i++) {
     if (dragooneggs[i].state != `in`) {
       dragooneggstate = `out`;
     }
   }
+
   if ((dragoonstate === `in`) && (dragooneggstate === `in`)) {
-    gamestate = `pause`
-    gameoverlay = `gover`
+    gamestate = `pause`;
+    gameoverlay = `selen_gover`;
   }
 
 }
@@ -450,6 +458,8 @@ function createStartCoin(x, y, speed) {
 function millie_game() {
   background(40);
 
+  timer();
+  millie_gameover();
   //pause buttons
   noStroke();
   fill(37, 142, 112); //X buton
@@ -468,6 +478,8 @@ function millie_game() {
 
   }
   millie_deletecoin();
+
+
   push();
   textAlign(CENTER);
   textSize(25);
@@ -477,9 +489,9 @@ function millie_game() {
 
   push();
   textAlign(CENTER);
-  textSize(25);
+  textSize(30);
   fill(255);
-  text(`Lives ${lives}`, 50, 30);
+  text(`Time ${time}`, 100, 50);
   pop();
 }
 
@@ -570,6 +582,14 @@ function millie_coincatch() {
       fallingcoin[i].caught = true;
       score++;
     }
+  }
+}
+
+function millie_gameover() {
+  if (time <= 0) {
+    gamestate = `pause`
+    gameoverlay = `millie_gover`
+
   }
 }
 // Millie game End
@@ -820,6 +840,12 @@ function musicSelector() {
   }
 }
 
+function timer() {
+  if (time >= 0) {
+    time -= 1;
+  }
+}
+
 function mousePressed() {
   //overlay not on
   if (gamestate === `playing`) {
@@ -866,6 +892,7 @@ function mousePressed() {
       if ((mouseX > 200 - 25) && (mouseX < 200 + 25) &&
         (mouseY > 25 - 25) && (mouseY < 25 + 25)) {
         gamescreen = `selen`
+        selen_setup();
 
       }
       if ((mouseX > 200 - 25) && (mouseX < 200 + 25) &&
@@ -919,26 +946,28 @@ function mousePressed() {
     }
   }
   //gameover screen
-  if (gameoverlay === `gover`) {
+  if (gameoverlay === `selen_gover`) {
     //replay screen
     if ((mouseX > 550 - 200) && (mouseX < 550 + 200) &&
       (mouseY > 266 - 35) && (mouseY < 266 + 35)) {
-      gamescreen = `menu`;
+      gamescreen = `selen`;
       gameoverlay = `no`;
       gamestate = `playing`;
       //making dragoons gving them position
-      for (let i = 0; i < flock; i++) {
-        dragoons[i] = createDragoons(random(20, width), random(20, height));
-      }
-      for (let i = 0; i < eggs; i++) {
-        dragooneggs[i] = createDragooneggs(random(20, width), random(20, height));
-      }
+      selen_setup();
     }
 
     //option screen
     if ((mouseX > 550 - 200) && (mouseX < 550 + 400) &&
       (mouseY > 400 - 35) && (mouseY < 400 + 35)) {
-      gameoverlay = `option`
+      gameoverlay = `option`;
+    }
+
+    if ((mouseX > 550 - 200) && (mouseX < 550 + 400) &&
+      (mouseY > 532 - 35) && (mouseY < 532 + 35)) {
+      gamescreen = 'lobby';
+      gamestate = `playing`;
+      gameoverlay = 'no';
     }
   }
 }
