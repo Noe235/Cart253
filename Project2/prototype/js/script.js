@@ -23,6 +23,8 @@ let gameoverlay = `no` //(no, gover,goption,option,credit)
 
 //assets
 let menuImage = `assets/images/Menu/menuImage.jpg`;
+let lobbyImage = `assets/images/game/lobby.jpg`;
+
 let dragoonImage = `assets/images/game/dragoon.png`;
 let dragooneggImage = `assets/images/game/dragoon_egg.png`;
 
@@ -30,6 +32,8 @@ let coinImage = `assets/images/game/coin.png`;
 let hatImage = `assets/images/game/Millie_hat.png`;
 let sewerImage = `assets/images/game/sewer.png`;
 
+let underwaterImage = `assets/images/game/underwater.jpg`;
+let fishImage = `assets/images/game/fish.png`;
 //music
 let mVolume = 0.5; //slider for volume
 let musicPlaying = `false`;
@@ -79,6 +83,7 @@ let millieplayer = {
 //finana games
 
 let mic = undefined;
+let lives = 3;
 
 let fish = {
   x: 100,
@@ -113,6 +118,7 @@ let mbutton3;
 function preload() {
   //image preload
   menuImage = loadImage(`assets/images/Menu/menuImage.jpg`);
+  lobbyImage = loadImage(`assets/images/game/lobby.jpg`);
   //selen
   dragoonImage = loadImage(`assets/images/game/dragoon.png`);
   dragooneggImage = loadImage(`assets/images/game/dragoon_egg.png`);
@@ -122,6 +128,9 @@ function preload() {
   hatImage = loadImage(`assets/images/game/Millie_hat.png`);
   sewerImage = loadImage(`assets/images/game/sewer.png`);
 
+  //finana
+  underwaterImage = loadImage(`assets/images/game/underwater.jpg`);
+  fishImage = loadImage(`assets/images/game/fish.png`);
 
   //track preload
   track1 = loadSound(`assets/sounds/雨上がりの午後.mp3`); //selen outro bgm
@@ -163,11 +172,12 @@ function draw() {
   // setting the lobby
   if (gamestate === `playing`) {
     if (gamescreen === `lobby`) {
-      background(71, 179, 57);
-      image(dragoonImage, 200, 100, 80, 80);
-      image(hatImage, 340, 550, 100, 100);
+      imageMode(CORNER);
+      image(lobbyImage, 0, 0, width, height);
+      image(dragoonImage, 940, 600, 80, 80);
+      image(hatImage, 300, 550, 100, 100);
+      image(fishImage, 570, 400, 150, 100);
 
-      rect(870, 450, 100, 100);
 
 
 
@@ -256,6 +266,25 @@ function draw() {
     text(`Money gathered ${score}`, width / 2, 635);
 
   }
+  if (gameoverlay === `finana_gover`) {
+    //window
+    fill(0, 0, 0, 70)
+    rect(width / 2, height / 2, 900, 500, 20);
+
+    //buttons
+    displayMButton(mbutton1);
+    displayMButton(mbutton2);
+    displayMButton(mbutton3);
+    //gover text
+    textSize(51);
+    textAlign(CENTER);
+    fill(255);
+    text(`Replay`, width / 2, 285);
+    text(`Options`, width / 2, 420);
+    text(`Lobby`, width / 2, 550);
+    textSize(25);
+    text(`Wall dogde ${score}`, width / 2, 635);
+  }
 }
 
 function adjVolume() {
@@ -275,8 +304,8 @@ function selen_game() {
 // Selen Game
 function selen_setup() {
   //random number of dragoon on the scrren
-  // flock = random(1, 10);
-  // eggs = random(1, 10);
+  flock = random(1, 10);
+  eggs = random(1, 10);
 
   // //----assign position to dragoons
   // for (let i = 0; i < flock; i++) {
@@ -667,7 +696,10 @@ function millie_gameover() {
 
 //finana games
 function finana_game() {
-  background(40);
+  push();
+  imageMode(CORNER);
+  image(underwaterImage, 0, 0, width, height);
+  pop();
 
   finana_micinput();
   finana_player();
@@ -675,6 +707,8 @@ function finana_game() {
   finana_display();
   finana_walladd();
   finanan_walldist();
+  finana_deletewall();
+  finana_gameover();
 
   noStroke();
   fill(37, 142, 112); //X buton
@@ -683,9 +717,25 @@ function finana_game() {
   textAlign(CENTER);
   fill(255);
   text(`||`, 1050, 60);
+
+  push();
+  textAlign(CENTER);
+  textSize(25);
+  fill(255);
+  text(`Score ${score}`, width - 70, 100);
+  pop();
+
+  push();
+  textAlign(CENTER);
+  textSize(30);
+  fill(255);
+  text(`Lives ${lives}`, 100, 50);
+  pop();
 }
 
 function finana_setup() {
+  score = 0;
+  lives = 3;
   mic = new p5.AudioIn();
   mic.start();
 
@@ -720,7 +770,7 @@ function finana_player() {
   //display
   push();
   fill(255);
-  ellipse(100, fish.y, fish.size);
+  image(fishImage, 100, fish.y, fish.size, 50);
   pop();
 
   if (fish.y > height - 25) {
@@ -757,10 +807,10 @@ function finana_displaywall(mur) {
 }
 
 function finana_walladd() {
-  if (fish.x >= width / 3) {
+  if (fish.x >= width - 400) {
     for (let i = 0; i < random(4, 8); i++) {
       let newwall = {
-        x: random(width * fish.wallcount, 2 * width * fish.wallcount),
+        x: random(fish.realx + width + 100, fish.realx + 2 * width - 100),
         y: random(0, height - 200),
         width: random(50, 150),
         height: random(10, 200),
@@ -772,13 +822,32 @@ function finana_walladd() {
   }
 }
 
+function finana_deletewall() {
+  for (let i = 0; i < obstacles.length; i++) {
+    if (obstacles[i].x <= fish.realx - 200) {
+      obstacles.splice(i, 1);
+      score++;
+
+    }
+
+  }
+}
+
 function finanan_walldist() {
   for (let i = 0; i < obstacles.length; i++) {
-
-    if ((fish.realx >= obstacles[i].x) && (fish.realx <= obstacles[i].x + obstacles[i].width) &&
-      (fish.y >= obstacles[i].y) && (fish.y <= obstacles[i].y + height)) {
-      console.log('touched');
+    if ((fish.realx >= obstacles[i].x) && (fish.realx <= obstacles[i].x + width)) {
+      if ((fish.y >= obstacles[i].y) && (fish.y <= obstacles[i].y + obstacles[i].height)) {
+        obstacles.splice(i, 1);
+        lives -= 1;
+      }
     }
+  }
+}
+
+function finana_gameover() {
+  if (lives <= 0) {
+    gamestate = `pause`;
+    gameoverlay = 'finana_gover';
   }
 }
 
@@ -1063,11 +1132,7 @@ function mousePressed() {
       if ((mouseX > 550 - 200) && (mouseX < 550 + 400) &&
         (mouseY > 400 - 35) && (mouseY < 400 + 35)) {
         gameoverlay = `option`
-        //music sound adjusment
 
-        // mVolume = createSlider(0, 1, 0.1, 0.01);
-        // // mVolume.position(150, 650);
-        // mVolume.style(`width`, `800px`);
 
       }
       //cedit screen
@@ -1081,8 +1146,9 @@ function mousePressed() {
 
     // lobby interaction
     if (gamescreen === 'lobby') {
-      if ((mouseX > 200 - 40) && (mouseX < 200 + 40) &&
-        (mouseY > 100 - 40) && (mouseY < 100 + 40)) {
+      console.log(mouseX, mouseY);
+      if ((mouseX > 980 - 40) && (mouseX < 980 + 40) &&
+        (mouseY > 640 - 40) && (mouseY < 640 + 40)) {
         gamescreen = `selen`
         selen_setup();
 
@@ -1093,9 +1159,9 @@ function mousePressed() {
         millie_setup();
 
       }
-      rect(870, 450, 100, 100);
-      if ((mouseX > 870 - 50) && (mouseX < 870 + 50) &&
-        (mouseY > 450 - 50) && (mouseY < 450 + 50)) {
+
+      if ((mouseX > 952 - 60) && (mouseX < 950 + 60) &&
+        (mouseY > 500 - 50) && (mouseY < 500 + 50)) {
         gamescreen = `finana`
         finana_setup();
 
@@ -1180,6 +1246,18 @@ function mousePressed() {
       //making coins gving them position
       millie_setup();
     }
+  }
+  if (gameoverlay === `finana_gover`) {
+    //replay screen
+    if ((mouseX > 550 - 200) && (mouseX < 550 + 200) &&
+      (mouseY > 266 - 35) && (mouseY < 266 + 35)) {
+      gamescreen = `finana`;
+      gameoverlay = `no`;
+      gamestate = `playing`;
+
+      //making wall gving them position
+      finana_setup();
+    }
 
     //option screen
     if ((mouseX > 550 - 200) && (mouseX < 550 + 400) &&
@@ -1194,4 +1272,5 @@ function mousePressed() {
       gameoverlay = 'no';
     }
   }
+
 }
