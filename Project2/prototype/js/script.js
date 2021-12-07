@@ -61,12 +61,8 @@ let dragooneggstate = `out`; //in or out of the pen
 let eggs = 1;
 
 //millie games
-// let gamestate = `no` //playing or no
-
 let score = 0;
 let time = 3600;
-
-
 
 let money = {
   caught: false,
@@ -199,12 +195,12 @@ function draw() {
       selen_game();
 
     }
-
+    // milie game
     if (gamescreen === `millie`) {
 
       millie_game();
     }
-
+    // finana game
     if (gamescreen === 'finana') {
       finana_game();
 
@@ -212,7 +208,7 @@ function draw() {
 
   }
 
-
+  // adjust music in option
   if (gameoverlay === `option`) {
     musicChecker();
     option();
@@ -222,7 +218,7 @@ function draw() {
   if (gameoverlay === `credit`) {
     credit();
   }
-
+  // different gameover screen for games
   if (gameoverlay === `selen_gover`) {
     //window
     fill(0, 0, 0, 70)
@@ -530,8 +526,11 @@ function selen_gameover() {
 // End of selen game
 // Millie game start
 function millie_setup() {
+  // place player
   millieplayer.x = width / 2;
   millieplayer.vx = 3;
+
+  //reset the score and time
   time = 3600;
   score = 0;
   // coin set up
@@ -552,12 +551,13 @@ function createStartCoin(x, y, speed) {
 }
 
 function millie_game() {
-
+  // set the bg
   imageMode(CORNER);
   image(sewerImage, 0, 0, width, height);
-
+  // start timer + chech gameover
   timer();
   millie_gameover();
+
   //pause buttons
   noStroke();
   fill(37, 142, 112); //X buton
@@ -567,7 +567,12 @@ function millie_game() {
   fill(255);
   text(`||`, 1050, 60);
 
+  //intructions
+  textAlign(LEFT);
+  textSize(24)
+  text(`Use the left and right arrow to move the hat and collect as much money before time runs out`, 10, 80);
 
+  // check if the money is caught to continue
   if (money.caught === false) {
     millie_player();
     millie_coinadd();
@@ -577,7 +582,7 @@ function millie_game() {
   }
   millie_deletecoin();
 
-
+  // display time and score
   push();
   textAlign(CENTER);
   textSize(25);
@@ -594,7 +599,7 @@ function millie_game() {
 }
 
 function millie_player() {
-
+  // draw the player
   push()
   fill(0, 64, 214);
   noStroke();
@@ -613,7 +618,7 @@ function millie_player() {
     millieplayer.x += millieplayer.vx;
 
   }
-
+  // wrap the player
   if (millieplayer.x > width) {
     millieplayer.x = 0
   }
@@ -623,7 +628,7 @@ function millie_player() {
 }
 
 function millie_coin() {
-  //display
+  //display the money
   for (let i = 0; i < fallingcoin.length; i++) {
     millie_displaycoin(fallingcoin[i]);
   }
@@ -664,6 +669,7 @@ function millie_displaycoin(money) {
 }
 
 function millie_deletecoin() {
+  // delete the coin when caught
   for (let i = 0; i < fallingcoin.length; i++) {
     if (fallingcoin[i].y >= 1000) {
       fallingcoin.splice(i, 1);
@@ -674,6 +680,7 @@ function millie_deletecoin() {
 }
 
 function millie_coincatch() {
+  // check each coin and the player
   for (let i = 0; i < fallingcoin.length; i++) {
     if ((fallingcoin[i].x >= millieplayer.x - 50) &&
       (fallingcoin[i].x <= millieplayer.x + 50) &&
@@ -686,6 +693,7 @@ function millie_coincatch() {
 }
 
 function millie_gameover() {
+  // timed game if time run out gameover state
   if (time <= 0) {
     gamestate = `pause`
     gameoverlay = `millie_gover`
@@ -696,20 +704,25 @@ function millie_gameover() {
 
 //finana games
 function finana_game() {
+  // set bg
   push();
   imageMode(CORNER);
   image(underwaterImage, 0, 0, width, height);
   pop();
 
+  // all the functions
   finana_micinput();
   finana_player();
+  // for wall specfitly
   finana_obstacle();
   finana_display();
   finana_walladd();
   finanan_walldist();
   finana_deletewall();
+  // gameover state
   finana_gameover();
 
+  // pause button
   noStroke();
   fill(37, 142, 112); //X buton
   rect(1050, 50, 50, 50, 5);
@@ -718,6 +731,12 @@ function finana_game() {
   fill(255);
   text(`||`, 1050, 60);
 
+  //intructions
+  textAlign(LEFT);
+  textSize(25)
+  text(`Use your voice to move the fish up and down and avoid obstacles`, 10, 80);
+
+  // display score and lives
   push();
   textAlign(CENTER);
   textSize(25);
@@ -734,12 +753,12 @@ function finana_game() {
 }
 
 function finana_setup() {
+  // reset variables
   score = 0;
   lives = 3;
   mic = new p5.AudioIn();
   mic.start();
-
-  score = 0;
+  // create the first obstacles
   for (let i = 0; i < nbobstacles; i++) {
     obstacles[i] = createObstacle(random(130, width), random(0, height - 200), random(10, 150), random(10, 200));
   }
@@ -757,12 +776,14 @@ function createObstacle(x, y, width, height) {
 }
 
 function finana_micinput() {
+  // maping the mic level and putting the speed of the character
   let level = mic.getLevel();
   fish.vy = map(level, 0, 0.4, 0, 150);
   fish.vx = map(level, 0, 0.4, 0, 50);
 }
 
 function finana_player() {
+  // making the player advance
   fish.ay = (gravity * 100) + -fish.vy;
   fish.y += fish.ay;
 
@@ -773,6 +794,7 @@ function finana_player() {
   image(fishImage, 100, fish.y, fish.size, 50);
   pop();
 
+  // constraining the player to the field
   if (fish.y > height - 25) {
     fish.y = height - 25;
   }
@@ -794,12 +816,14 @@ function finana_obstacle() {
 }
 
 function finana_display() {
+  // display walls array
   for (let i = 0; i < obstacles.length; i++) {
     finana_displaywall(obstacles[i]);
   }
 }
 
 function finana_displaywall(mur) {
+  // display specific wall
   push();
   rectMode(CORNER);
   rect(mur.x + fish.ax, mur.y, mur.width, mur.height);
@@ -807,6 +831,7 @@ function finana_displaywall(mur) {
 }
 
 function finana_walladd() {
+  // add a wall at pecise distance +into array
   if (fish.x >= width - 400) {
     for (let i = 0; i < random(4, 8); i++) {
       let newwall = {
@@ -823,6 +848,7 @@ function finana_walladd() {
 }
 
 function finana_deletewall() {
+  // delete the wall to not cram the array + add a point
   for (let i = 0; i < obstacles.length; i++) {
     if (obstacles[i].x <= fish.realx - 200) {
       obstacles.splice(i, 1);
@@ -834,6 +860,7 @@ function finana_deletewall() {
 }
 
 function finanan_walldist() {
+  // check if the player and walls collide
   for (let i = 0; i < obstacles.length; i++) {
     if ((fish.realx >= obstacles[i].x) && (fish.realx <= obstacles[i].x + width)) {
       if ((fish.y >= obstacles[i].y) && (fish.y <= obstacles[i].y + obstacles[i].height)) {
@@ -845,6 +872,7 @@ function finanan_walldist() {
 }
 
 function finana_gameover() {
+  // lives game en of game when no more live
   if (lives <= 0) {
     gamestate = `pause`;
     gameoverlay = 'finana_gover';
@@ -904,6 +932,7 @@ function option() {
     trianx1: 210,
     trianx2: 235
   }
+  // for helping draw the play button
   for (let rt = 0; rt < 4; rt++) {
     fill(149, 200, 216, 100);
     rect(tdisplay.rectx, 350, 190, 310, 20);
