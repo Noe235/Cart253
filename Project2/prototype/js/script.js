@@ -1069,12 +1069,26 @@ function credit() {
   //cedit text
   textAlign(LEFT);
   textSize(20)
+  text(`Full links in the README`, 150, 270);
+  textSize(17)
+  // bmenu + lobby
   text(`Menu background by brgfx -www.freepik.com`, 150, 300);
+  text(`Lobby background by freepik -www.freepik.com`, 150, 320);
+  // selen game
   text(`dragoons by Selen Tatsuki -https://twitter.com/selen_tatsuki/status/1432534022308212750`, 150, 350);
-  text(`dragoons egg by Selen Tatsuki -https://twitter.com/selen_tatsuki/status/1432534022308212750`, 150, 400);
-  text(`Afternoon after rain -https://dova-s.jp/`, 150, 450);
-  text(`Easy time -https://dova-s.jp/`, 150, 500);
-  text(`Forgotten Memories -https://dova-s.jp/`, 150, 550);
+  text(`dragoons egg by Selen Tatsuki -https://twitter.com/selen_tatsuki/status/1432534022308212750`, 150, 370);
+  // millie game
+  text(`Millie hat shared by Millie Parfait -https://twitter.com/MillieParfait/status/1447084913593888771`, 150, 410);
+  text(`coins by rawingMyDiary -www.freepik`, 150, 430);
+  text(`sewer by upklyak -www.freepik.com`, 150, 450);
+  // finana games
+  text(`fish by freepik -www.freepik.com`, 150, 480);
+  text(`underwater by upklyak -www.freepik.com`, 150, 500);
+
+  // music
+  text(`Afternoon after rain -https://dova-s.jp/`, 150, 540);
+  text(`Easy time -https://dova-s.jp/`, 150, 560);
+  text(`Forgotten Memories -https://dova-s.jp/`, 150, 580);
   text(`Accumula Town by Zame -https://www.youtube.com/watch?v=eAqFZaGnxoI`, 150, 600);
 
 }
