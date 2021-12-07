@@ -1153,15 +1153,15 @@ function mousePressed() {
         selen_setup();
 
       }
-      if ((mouseX > 340 - 50) && (mouseX < 340 + 50) &&
-        (mouseY > 550 - 50) && (mouseY < 550 + 50)) {
+      if ((mouseX > 350 - 50) && (mouseX < 350 + 50) &&
+        (mouseY > 610 - 50) && (mouseY < 610 + 50)) {
         gamescreen = `millie`
         millie_setup();
 
       }
 
-      if ((mouseX > 952 - 60) && (mouseX < 950 + 60) &&
-        (mouseY > 500 - 50) && (mouseY < 500 + 50)) {
+      if ((mouseX > 660 - 60) && (mouseX < 660 + 60) &&
+        (mouseY > 450 - 50) && (mouseY < 450 + 50)) {
         gamescreen = `finana`
         finana_setup();
 
