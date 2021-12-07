@@ -76,6 +76,35 @@ let millieplayer = {
   active: true,
 };
 
+//finana games
+
+let mic = undefined;
+
+let fish = {
+  x: 100,
+  y: 200,
+  vx: 0,
+  vy: 0,
+  ax: 0,
+  ay: 0,
+  size: 50,
+  wallcount: 1,
+  realx: 100
+
+};
+
+let gravity = 0.05;
+
+let wall = {
+  x: 0,
+  y: 0,
+
+
+
+}
+let obstacles = [];
+let nbobstacles = 4;
+
 //buttons
 let mbutton1;
 let mbutton2;
@@ -122,6 +151,7 @@ function setup() {
 //
 // Description of draw() goes here.
 function draw() {
+  rectMode(CENTER);
   //adjust volume all the time
   adjVolume();
 
@@ -134,10 +164,14 @@ function draw() {
   if (gamestate === `playing`) {
     if (gamescreen === `lobby`) {
       background(71, 179, 57);
-      rect(200, 25, 50);
-      rect(200, 250, 50);
+      image(dragoonImage, 200, 100, 80, 80);
+      image(hatImage, 340, 550, 100, 100);
+
+      rect(870, 450, 100, 100);
 
 
+
+      // back button
       noStroke();
       fill(37, 142, 112); //X buton
       rect(1050, 50, 50, 50, 5);
@@ -159,6 +193,11 @@ function draw() {
     if (gamescreen === `millie`) {
 
       millie_game();
+    }
+
+    if (gamescreen === 'finana') {
+      finana_game();
+
     }
 
   }
@@ -484,7 +523,7 @@ function createStartCoin(x, y, speed) {
 }
 
 function millie_game() {
-  background(40);
+
   imageMode(CORNER);
   image(sewerImage, 0, 0, width, height);
 
@@ -530,7 +569,7 @@ function millie_player() {
   push()
   fill(0, 64, 214);
   noStroke();
-  // rectMode(CENTER);
+  // (CENTER);
   imageMode(CENTER);
   image(hatImage, millieplayer.x, millieplayer.y, 200, 200); //20 is place holdre since there will be a image
   pop();
@@ -576,7 +615,7 @@ function millie_coinadd() {
     }
 
     fallingcoin.push(newcoin);
-    console.log(`new coin`);
+
 
   }
 }
@@ -599,7 +638,7 @@ function millie_deletecoin() {
   for (let i = 0; i < fallingcoin.length; i++) {
     if (fallingcoin[i].y >= 1000) {
       fallingcoin.splice(i, 1);
-      console.log('deleted')
+
     }
 
   }
@@ -625,9 +664,128 @@ function millie_gameover() {
   }
 }
 // Millie game End
+
+//finana games
+function finana_game() {
+  background(40);
+
+  finana_micinput();
+  finana_player();
+  finana_obstacle();
+  finana_display();
+  finana_walladd();
+  finanan_walldist();
+
+  noStroke();
+  fill(37, 142, 112); //X buton
+  rect(1050, 50, 50, 50, 5);
+  textSize(35);
+  textAlign(CENTER);
+  fill(255);
+  text(`||`, 1050, 60);
+}
+
+function finana_setup() {
+  mic = new p5.AudioIn();
+  mic.start();
+
+  score = 0;
+  for (let i = 0; i < nbobstacles; i++) {
+    obstacles[i] = createObstacle(random(130, width), random(0, height - 200), random(10, 150), random(10, 200));
+  }
+}
+
+function createObstacle(x, y, width, height) {
+  let mur = {
+    x: x,
+    y: y,
+    width: width,
+    height: height,
+
+  }
+  return mur;
+}
+
+function finana_micinput() {
+  let level = mic.getLevel();
+  fish.vy = map(level, 0, 0.4, 0, 150);
+  fish.vx = map(level, 0, 0.4, 0, 50);
+}
+
+function finana_player() {
+  fish.ay = (gravity * 100) + -fish.vy;
+  fish.y += fish.ay;
+
+
+  //display
+  push();
+  fill(255);
+  ellipse(100, fish.y, fish.size);
+  pop();
+
+  if (fish.y > height - 25) {
+    fish.y = height - 25;
+  }
+  if (fish.y < 25) {
+    fish.y = 0 + 25;
+  }
+
+}
+
+function finana_obstacle() {
+  //make the block advance
+  fish.ax += -fish.vx;
+  fish.realx += fish.vx;
+  fish.x += fish.vx;
+
+
+
+
+}
+
+function finana_display() {
+  for (let i = 0; i < obstacles.length; i++) {
+    finana_displaywall(obstacles[i]);
+  }
+}
+
+function finana_displaywall(mur) {
+  push();
+  rectMode(CORNER);
+  rect(mur.x + fish.ax, mur.y, mur.width, mur.height);
+  pop();
+}
+
+function finana_walladd() {
+  if (fish.x >= width / 3) {
+    for (let i = 0; i < random(4, 8); i++) {
+      let newwall = {
+        x: random(width * fish.wallcount, 2 * width * fish.wallcount),
+        y: random(0, height - 200),
+        width: random(50, 150),
+        height: random(10, 200),
+      }
+      obstacles.push(newwall);
+    }
+    fish.wallcount++;
+    fish.x = 100;
+  }
+}
+
+function finanan_walldist() {
+  for (let i = 0; i < obstacles.length; i++) {
+
+    if ((fish.realx >= obstacles[i].x) && (fish.realx <= obstacles[i].x + obstacles[i].width) &&
+      (fish.y >= obstacles[i].y) && (fish.y <= obstacles[i].y + height)) {
+      console.log('touched');
+    }
+  }
+}
+
 function menu() {
   clear();
   //bg
+  imageMode(CORNER);
   image(menuImage, 0, 0, width, height);
 
 
@@ -661,7 +819,7 @@ function menubutton(y) {
 }
 
 function displayMButton(mbutton) {
-  rectMode(CENTER);
+  rect(CENTER);
   noStroke();
   fill(37, 142, 112); //pomu color
   rect(mbutton.x, mbutton.y, mbutton.lenght, mbutton.height);
@@ -715,7 +873,7 @@ function option() {
   if (gamescreen != 'menu') {
     if (gamescreen === 'lobby') {
       //lobby button
-      rectMode(CENTER);
+      (CENTER);
       noStroke();
       fill(37, 142, 112); //pomu color
       rect(width / 2, 575, 350, 100, 10);
@@ -725,7 +883,7 @@ function option() {
       text(`Back to menu`, 400, 595); //menu text
     } else {
       //lobby button
-      rectMode(CENTER);
+      (CENTER);
       noStroke();
       fill(37, 142, 112); //pomu color
       rect(width / 2, 575, 350, 100, 10);
@@ -919,21 +1077,29 @@ function mousePressed() {
       }
 
     }
+
+
     // lobby interaction
     if (gamescreen === 'lobby') {
-      if ((mouseX > 200 - 25) && (mouseX < 200 + 25) &&
-        (mouseY > 25 - 25) && (mouseY < 25 + 25)) {
+      if ((mouseX > 200 - 40) && (mouseX < 200 + 40) &&
+        (mouseY > 100 - 40) && (mouseY < 100 + 40)) {
         gamescreen = `selen`
         selen_setup();
 
       }
-      if ((mouseX > 200 - 25) && (mouseX < 200 + 25) &&
-        (mouseY > 250 - 25) && (mouseY < 250 + 25)) {
+      if ((mouseX > 340 - 50) && (mouseX < 340 + 50) &&
+        (mouseY > 550 - 50) && (mouseY < 550 + 50)) {
         gamescreen = `millie`
         millie_setup();
 
       }
+      rect(870, 450, 100, 100);
+      if ((mouseX > 870 - 50) && (mouseX < 870 + 50) &&
+        (mouseY > 450 - 50) && (mouseY < 450 + 50)) {
+        gamescreen = `finana`
+        finana_setup();
 
+      }
 
 
 
