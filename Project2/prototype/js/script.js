@@ -44,7 +44,12 @@ let track2 = `assets/sounds/やさしいじかん.mp3`; //elira bgm
 let track3 = `assets/sounds/忘れた記憶.mp3`; //selen bgm
 let track4 = `assets/sounds/Accumula Town.mp3`; //furret walk
 
-
+// lobby
+let hover = {
+  selengame: 0,
+  finanagame: 0,
+  milliegame: 0,
+}
 //distances
 //music
 let d1 = 50;
@@ -170,10 +175,31 @@ function draw() {
     if (gamescreen === `lobby`) {
       imageMode(CORNER);
       image(lobbyImage, 0, 0, width, height);
-      image(dragoonImage, 940, 600, 80, 80);
-      image(hatImage, 300, 550, 100, 100);
-      image(fishImage, 570, 400, 150, 100);
+      imageMode(CENTER);
+      image(dragoonImage, 940, 600, 80 + hover.selengame, 80 + hover.selengame);
+      image(hatImage, 350, 550, 100 + hover.milliegame, 100 + hover.milliegame);
+      image(fishImage, 570, 400, 150 + hover.finanagame, 100 + hover.finanagame);
 
+      hover.selengame = 0;
+      hover.milliegame = 0;
+      hover.finanagame = 0;
+      //hovering mouse
+
+      if ((mouseX > 940 - 40) && (mouseX < 940 + 40) &&
+        (mouseY > 600 - 40) && (mouseY < 600 + 40)) {
+        hover.selengame = 50;
+
+      }
+      if ((mouseX > 350 - 50) && (mouseX < 350 + 50) &&
+        (mouseY > 550 - 50) && (mouseY < 550 + 50)) {
+        hover.milliegame = 50;
+
+      }
+
+      if ((mouseX > 570 - 60) && (mouseX < 570 + 60) &&
+        (mouseY > 400 - 50) && (mouseY < 400 + 50)) {
+        hover.finanagame = 50;
+      }
 
 
 
@@ -301,7 +327,7 @@ function selen_game() {
 function selen_setup() {
   //random number of dragoon on the scrren
   flock = random(1, 10);
-  eggs = random(1, 10);
+  eggs = random(0, 10);
 
   // //----assign position to dragoons
   // for (let i = 0; i < flock; i++) {
@@ -325,8 +351,7 @@ function selen_main() {
   background(71, 179, 57);
 
   //pen
-  // fill(255);
-  // rect(200, 400, 130, 130);
+
   stroke(89, 66, 51);
   strokeWeight(4);
   fill(89, 66, 51);
@@ -362,6 +387,13 @@ function selen_pieces() {
   for (let i = 0; i < dragooneggs.length; i++) {
     moveDragooneggs(dragooneggs[i]);
   }
+
+  // line(135, 335,
+  //   265, 335);
+  // line(135, 335,
+  //   135, 465);
+  // line(135, 465,
+  //   265, 465);
 
 }
 
@@ -434,6 +466,8 @@ function moveDragooneggs(dragooneggs) {
   dragooneggs.x = constrain(dragooneggs.x, 30, width - 30);
   dragooneggs.y = constrain(dragooneggs.y, 30, height - 30);
 
+
+
 }
 
 function selen_checkdist() {
@@ -442,17 +476,17 @@ function selen_checkdist() {
   for (let i = 0; i < dragoons.length; i++) {
     let dis = dist(mouseX, mouseY, dragoons[i].x, dragoons[i].y)
 
-    if (dis < 20) {
-      if (mouseX > dragoons[i].x) { //mouse is on the right
+    if (dis < 25) {
+      if (mouseX > dragoons[i].x + 10) { //mouse is on the right
         dragoons[i].x -= 10
       }
-      if (mouseX < dragoons[i].x) { //mouse on the left
+      if (mouseX < dragoons[i].x - 10) { //mouse on the left
         dragoons[i].x += 10
       }
-      if (mouseY > dragoons[i].y) { //mouse is below
+      if (mouseY > dragoons[i].y + 10) { //mouse is below
         dragoons[i].y -= 10
       }
-      if (mouseY < dragoons[i].y) { //mousse is above
+      if (mouseY < dragoons[i].y - 10) { //mousse is above
         dragoons[i].y += 10
       }
     }
@@ -462,22 +496,40 @@ function selen_checkdist() {
     let disegg = dist(mouseX, mouseY, dragooneggs[i].x, dragooneggs[i].y)
 
     if (disegg < 17) {
-      if (mouseX > dragooneggs[i].x) { //mouse is on the right
+      if (mouseX > dragooneggs[i].x + 10) { //mouse is on the right
         dragooneggs[i].x -= 10
       }
-      if (mouseX < dragooneggs[i].x) { //mouse on the left
+      if (mouseX < dragooneggs[i].x - 10) { //mouse on the left
         dragooneggs[i].x += 10
       }
-      if (mouseY > dragooneggs[i].y) { //mouse is below
+      if (mouseY > dragooneggs[i].y + 10) { //mouse is below
         dragooneggs[i].y -= 10
       }
-      if (mouseY < dragooneggs[i].y) { //mousse is above
+      if (mouseY < dragooneggs[i].y - 10) { //mousse is above
         dragooneggs[i].y += 10
       }
     }
   }
-}
+  // console.log(mouseX, mouseY);
+  // // making the pen not passable
+  // for (let i = 0; i < dragoons.length; i++) {
+  //   if ((dragoons[i].x >= 135 + 25) && (dragoons[i].x <= 265 - 25) && (dragoons[i].y >= 330 + 25) && (dragoons[i].y <= 340 - 25)) {
+  //     if (dragoons[i].y >= 340 - 25) {
+  //       dragoons[i].y += 100;
+  //     }
+  //     if (dragoons[i].y <= 330 + 25) {
+  //       dragoons[i].y -= 100;
+  //     }
+  //   }
+  // }
+  // for (let i = 0; i < dragoons.length; i++) {
+  //   if ((dragoons[i].x >= 135) && (dragoons[i].x <= 265) && (dragoons[i].y >= 330) && (dragoons[i].y <= 340)) {
+  //
+  //     dragoons[i].y += 1;
+  //   }
 
+  // }
+}
 
 function selen_gameover() {
   //check if the dragoons are inside the pen
@@ -1190,22 +1242,22 @@ function mousePressed() {
 
     // lobby interaction
     if (gamescreen === 'lobby') {
-      console.log(mouseX, mouseY);
-      if ((mouseX > 980 - 40) && (mouseX < 980 + 40) &&
-        (mouseY > 640 - 40) && (mouseY < 640 + 40)) {
+
+      if ((mouseX > 940 - 40) && (mouseX < 940 + 40) &&
+        (mouseY > 600 - 40) && (mouseY < 600 + 40)) {
         gamescreen = `selen`
         selen_setup();
 
       }
       if ((mouseX > 350 - 50) && (mouseX < 350 + 50) &&
-        (mouseY > 610 - 50) && (mouseY < 610 + 50)) {
+        (mouseY > 550 - 50) && (mouseY < 550 + 50)) {
         gamescreen = `millie`
         millie_setup();
 
       }
 
-      if ((mouseX > 660 - 60) && (mouseX < 660 + 60) &&
-        (mouseY > 450 - 50) && (mouseY < 450 + 50)) {
+      if ((mouseX > 570 - 60) && (mouseX < 570 + 60) &&
+        (mouseY > 400 - 50) && (mouseY < 400 + 50)) {
         gamescreen = `finana`
         finana_setup();
 
