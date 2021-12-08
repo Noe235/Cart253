@@ -279,7 +279,7 @@ function draw() {
     text(`Options`, width / 2, 420);
     text(`Lobby`, width / 2, 550);
     textSize(25);
-    text(`Wall dogde ${score}`, width / 2, 635);
+    text(`Wall dodge ${score}`, width / 2, 635);
   }
 }
 
@@ -826,6 +826,7 @@ function finana_displaywall(mur) {
   // display specific wall
   push();
   rectMode(CORNER);
+  fill(89, 89, 97);
   rect(mur.x + fish.ax, mur.y, mur.width, mur.height);
   pop();
 }
@@ -1289,7 +1290,20 @@ function mousePressed() {
       //making coins gving them position
       millie_setup();
     }
+    //option screen
+    if ((mouseX > 550 - 200) && (mouseX < 550 + 400) &&
+      (mouseY > 400 - 35) && (mouseY < 400 + 35)) {
+      gameoverlay = `option`;
+    }
+
+    if ((mouseX > 550 - 200) && (mouseX < 550 + 400) &&
+      (mouseY > 532 - 35) && (mouseY < 532 + 35)) {
+      gamescreen = 'lobby';
+      gamestate = `playing`;
+      gameoverlay = 'no';
+    }
   }
+
   if (gameoverlay === `finana_gover`) {
     //replay screen
     if ((mouseX > 550 - 200) && (mouseX < 550 + 200) &&
