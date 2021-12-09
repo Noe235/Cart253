@@ -24,6 +24,18 @@ let gameoverlay = `no` //(no, gover,goption,option,credit)
 //assets
 let menuImage = `assets/images/Menu/menuImage.jpg`;
 let lobbyImage = `assets/images/game/lobby.jpg`;
+let selenchibi = 'assets/images/Menu/chibiselen.png';
+
+// lobby
+let ufo = 'assets/images/Menu/ufo.png';
+let candle = 'assets/images/Menu/canddle.png';
+
+// sound for lobby
+let bongosbinted = 'assets/sounds/funnysoundclip/bongosbinted.mp3';
+let nijisanji = 'assets/sounds/funnysoundclip/nijisanji.mp3';
+let rosemibehappy = 'assets/sounds/funnysoundclip/Rosemi-behappy.mp3';
+let candlemeta = 'assets/sounds/funnysoundclip/Selen_candle_meta.mp3';
+let selensike = 'assets/sounds/funnysoundclip/sike.mp3';
 
 let dragoonImage = `assets/images/game/dragoon.png`;
 let dragooneggImage = `assets/images/game/dragoon_egg.png`;
@@ -139,6 +151,19 @@ function preload() {
   track3 = loadSound(`assets/sounds/忘れた記憶.mp3`); //selen bgm
   track4 = loadSound(`assets/sounds/Accumula Town.mp3`); //furret walk
 
+
+  selenchibi = loadImage('assets/images/Menu/chibiselen.png');
+
+  // lobby
+  ufo = loadImage('assets/images/Menu/ufo.png');
+  candle = loadImage('assets/images/Menu/canddle.png');
+
+  // sound for lobby
+  bongosbinted = loadSound('assets/sounds/funnysoundclip/bongosbinted.mp3');
+  nijisanji = loadSound('assets/sounds/funnysoundclip/nijisanji.mp3');
+  rosemibehappy = loadSound('assets/sounds/funnysoundclip/Rosemi-behappy.mp3');
+  candlemeta = loadSound('assets/sounds/funnysoundclip/Selen_candle_meta.mp3');
+  selensike = loadSound('assets/sounds/funnysoundclip/sike.mp3');
 }
 // setup()
 // Only canvas + random generator
@@ -955,7 +980,8 @@ function menu() {
   textAlign(LEFT);
   text(`Press Options to choose a BGM`, 0, 795);
 
-
+  // selen chibi
+  image(selenchibi, 200, 800, 50, 50);
 }
 
 function menubutton(y) {
