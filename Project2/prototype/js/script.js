@@ -29,6 +29,8 @@ let selenchibi = 'assets/images/Menu/chibiselen.png';
 // lobby
 let ufo = 'assets/images/Menu/ufo.png';
 let candle = 'assets/images/Menu/canddle.png';
+let talldragoon = 'assets/images/Menu/talldragoon.png';
+let rosemichibi = 'assets/images/Menu/chibirosemi.png';
 
 // sound for lobby
 let bongosbinted = 'assets/sounds/funnysoundclip/bongosbinted.mp3';
@@ -58,6 +60,10 @@ let track4 = `assets/sounds/Accumula Town.mp3`; //furret walk
 
 // lobby
 let hover = {
+  selen: 0,
+  ufo: 0,
+  candle: 0,
+  rosemi: 0,
   selengame: 0,
   finanagame: 0,
   milliegame: 0,
@@ -157,13 +163,14 @@ function preload() {
   // lobby
   ufo = loadImage('assets/images/Menu/ufo.png');
   candle = loadImage('assets/images/Menu/canddle.png');
-
+  talldragoon = loadImage('assets/images/Menu/talldragoon.png');
+  rosemichibi = loadImage('assets/images/Menu/chibirosemi.png');
   // sound for lobby
   bongosbinted = loadSound('assets/sounds/funnysoundclip/bongosbinted.mp3');
   nijisanji = loadSound('assets/sounds/funnysoundclip/nijisanji.mp3');
   rosemibehappy = loadSound('assets/sounds/funnysoundclip/Rosemi-behappy.mp3');
-  candlemeta = loadSound('assets/sounds/funnysoundclip/Selen_candle_meta.mp3');
-  selensike = loadSound('assets/sounds/funnysoundclip/sike.mp3');
+  candlemeta = loadSound('assets/sounds/funnysoundclip/Selen_candle_meta_bitch.mp3');
+  selensike = loadSound('assets/sounds/funnysoundclip/Selen_sike_bitch.mp3');
 }
 // setup()
 // Only canvas + random generator
@@ -193,6 +200,7 @@ function draw() {
   if (gamescreen === `menu`) {
     if (gameoverlay === `no`) {
       menu();
+
     }
   }
   // setting the lobby
@@ -204,10 +212,17 @@ function draw() {
       image(dragoonImage, 940, 600, 80 + hover.selengame, 80 + hover.selengame);
       image(hatImage, 350, 550, 100 + hover.milliegame, 100 + hover.milliegame);
       image(fishImage, 570, 400, 150 + hover.finanagame, 100 + hover.finanagame);
+      image(talldragoon, 750, 650, 80 + hover.selen, 100 + hover.selen)
+      image(ufo, 400, 50, 140 + hover.ufo, 90 + hover.ufo)
+      image(candle, 200, 620, 40 + hover.candle, 80 + hover.candle)
 
       hover.selengame = 0;
       hover.milliegame = 0;
       hover.finanagame = 0;
+      hover.selen = 0;
+      hover.ufo = 0;
+      hover.candle = 0;
+
       //hovering mouse
 
       if ((mouseX > 940 - 40) && (mouseX < 940 + 40) &&
@@ -225,8 +240,18 @@ function draw() {
         (mouseY > 400 - 50) && (mouseY < 400 + 50)) {
         hover.finanagame = 50;
       }
-
-
+      if ((mouseX > 750 - 40) && (mouseX < 750 + 40) &&
+        (mouseY > 650 - 50) && (mouseY < 650 + 50)) {
+        hover.selen = 50;
+      }
+      if ((mouseX > 400 - 70) && (mouseX < 400 + 70) &&
+        (mouseY > 50 - 45) && (mouseY < 50 + 45)) {
+        hover.ufo = 50;
+      }
+      if ((mouseX > 200 - 20) && (mouseX < 200 + 20) &&
+        (mouseY > 620 - 40) && (mouseY < 620 + 40)) {
+        hover.candle = 50;
+      }
 
       // back button
       noStroke();
@@ -354,13 +379,6 @@ function selen_setup() {
   flock = random(1, 10);
   eggs = random(0, 10);
 
-  // //----assign position to dragoons
-  // for (let i = 0; i < flock; i++) {
-  //   let x = random(20, width);
-  //   let y = random(20, width);
-  //   let dmember = new Dragoon(x, y);
-  //   dragoons.push(dmember);
-  // }
 
   //making dragoons gving them position
   for (let i = 0; i < flock; i++) {
@@ -413,12 +431,7 @@ function selen_pieces() {
     moveDragooneggs(dragooneggs[i]);
   }
 
-  // line(135, 335,
-  //   265, 335);
-  // line(135, 335,
-  //   135, 465);
-  // line(135, 465,
-  //   265, 465);
+
 
 }
 
@@ -535,25 +548,7 @@ function selen_checkdist() {
       }
     }
   }
-  // console.log(mouseX, mouseY);
-  // // making the pen not passable
-  // for (let i = 0; i < dragoons.length; i++) {
-  //   if ((dragoons[i].x >= 135 + 25) && (dragoons[i].x <= 265 - 25) && (dragoons[i].y >= 330 + 25) && (dragoons[i].y <= 340 - 25)) {
-  //     if (dragoons[i].y >= 340 - 25) {
-  //       dragoons[i].y += 100;
-  //     }
-  //     if (dragoons[i].y <= 330 + 25) {
-  //       dragoons[i].y -= 100;
-  //     }
-  //   }
-  // }
-  // for (let i = 0; i < dragoons.length; i++) {
-  //   if ((dragoons[i].x >= 135) && (dragoons[i].x <= 265) && (dragoons[i].y >= 330) && (dragoons[i].y <= 340)) {
-  //
-  //     dragoons[i].y += 1;
-  //   }
 
-  // }
 }
 
 function selen_gameover() {
@@ -963,7 +958,24 @@ function menu() {
   imageMode(CORNER);
   image(menuImage, 0, 0, width, height);
 
+  // selen chibi
+  push();
+  imageMode(CENTER);
+  image(selenchibi, 150, 500, 150 + hover.selen, 150 + hover.selen);
+  image(rosemichibi, width - 150, 520, 150 + hover.rosemi, 150 + hover.rosemi)
+  pop();
+  // hover
+  hover.selen = 0;
+  hover.rosemi = 0;
+  if ((mouseX > 150 - 75) && (mouseX < 150 + 75) &&
+    (mouseY > 500 - 75) && (mouseY < 500 + 75)) {
+    hover.selen = 50;
+  }
 
+  if ((mouseX > width - 225) && (mouseX < width - 150 + 75) &&
+    (mouseY > 520 - 75) && (mouseY < 520 + 75)) {
+    hover.rosemi = 50;
+  }
   //buttons
   displayMButton(mbutton1);
   displayMButton(mbutton2);
@@ -980,8 +992,7 @@ function menu() {
   textAlign(LEFT);
   text(`Press Options to choose a BGM`, 0, 795);
 
-  // selen chibi
-  image(selenchibi, 200, 800, 50, 50);
+
 }
 
 function menubutton(y) {
@@ -1251,18 +1262,31 @@ function mousePressed() {
 
       }
       //option screen
-      if ((mouseX > 550 - 200) && (mouseX < 550 + 400) &&
+      if ((mouseX > 550 - 200) && (mouseX < 550 + 200) &&
         (mouseY > 400 - 35) && (mouseY < 400 + 35)) {
         gameoverlay = `option`
 
 
       }
       //cedit screen
-      if ((mouseX > 550 - 200) && (mouseX < 550 + 400) &&
+      if ((mouseX > 550 - 200) && (mouseX < 550 + 200) &&
         (mouseY > 532 - 35) && (mouseY < 532 + 35)) {
         gameoverlay = `credit`;
       }
 
+      if ((mouseX > 150 - 75) && (mouseX < 150 + 75) && (mouseY > 500 - 75) && (mouseY < 500 + 75)) {
+        if (nijisanji.isPlaying() != true) {
+          nijisanji.setVolume(mVolume.value());
+          nijisanji.play();
+        }
+      }
+
+      if ((mouseX > width - 225) && (mouseX < width - 150 + 75) && (mouseY > 520 - 75) && (mouseY < 520 + 75)) {
+        if (rosemibehappy.isPlaying() != true) {
+          rosemibehappy.setVolume(mVolume.value());
+          rosemibehappy.play();
+        }
+      }
     }
 
 
@@ -1289,8 +1313,31 @@ function mousePressed() {
 
       }
 
+      // for sound clips
+      if ((mouseX > 750 - 40) && (mouseX < 750 + 40) &&
+        (mouseY > 650 - 50) && (mouseY < 650 + 50)) {
+        if (selensike.isPlaying() != true) {
+          selensike.setVolume(mVolume.value());
+          selensike.play();
 
+        }
+      }
 
+      if ((mouseX > 400 - 70) && (mouseX < 400 + 70) &&
+        (mouseY > 50 - 45) && (mouseY < 50 + 45)) {
+        if (bongosbinted.isPlaying() != true) {
+          bongosbinted.setVolume(mVolume.value());
+          bongosbinted.play();
+        }
+      }
+
+      if ((mouseX > 200 - 20) && (mouseX < 200 + 20) &&
+        (mouseY > 620 - 40) && (mouseY < 620 + 40)) {
+        if (candlemeta.isPlaying() != true) {
+          candlemeta.setVolume(mVolume.value());
+          candlemeta.play();
+        }
+      }
 
 
     }
