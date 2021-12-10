@@ -11,8 +11,8 @@ let gamescreen = `menu`; //(nameing the game after the people
 // menu,
 // lobby
 // selen
-//
-//
+//finana
+//millie
 // )
 
 //in the function
@@ -191,7 +191,7 @@ function setup() {
 }
 // draw()
 //
-// Description of draw() goes here.
+//
 function draw() {
   rectMode(CENTER);
   //adjust volume all the time
@@ -1159,7 +1159,7 @@ function credit() {
   //cedit text
   textAlign(LEFT);
   textSize(20)
-  text(`Full links in the README`, 150, 270);
+  text(`Full links in the README and all `, 150, 270);
   textSize(17)
   // bmenu + lobby
   text(`Menu background by brgfx -www.freepik.com`, 150, 300);
